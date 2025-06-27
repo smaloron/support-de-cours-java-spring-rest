@@ -1,0 +1,226 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#307FFF"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-06-27T16:21:41.766968"><title>Chapitre 2 : Interagir avec les Ressources - Pour aller plus loin | Help Instance</title><script type="application/json" id="virtual-toc-data">[{"id":"objectifs-p-dagogiques","level":0,"title":"Objectifs Pédagogiques","anchor":"#objectifs-p-dagogiques"},{"id":"introduction-de-spectateur-acteur","level":0,"title":"Introduction : De spectateur à acteur","anchor":"#introduction-de-spectateur-acteur"},{"id":"les-op-rations-crud-en-d-tail","level":0,"title":"Les Opérations CRUD en Détail","anchor":"#les-op-rations-crud-en-d-tail"},{"id":"exercice-3-compl-ter-le-crud-pour-les-auteurs","level":0,"title":"Exercice 3 : Compléter le CRUD pour les Auteurs","anchor":"#exercice-3-compl-ter-le-crud-pour-les-auteurs"},{"id":"correction-exercice-3","level":0,"title":"Correction exercice 3","anchor":"#correction-exercice-3"},{"id":"auto-valuation","level":0,"title":"Auto-évaluation","anchor":"#auto-valuation"},{"id":"conclusion","level":0,"title":"Conclusion","anchor":"#conclusion"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b776/app.css" rel="stylesheet"><meta name="msapplication-TileColor" content="#000000"><link rel="apple-touch-icon" sizes="180x180" href="https://jetbrains.com/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://jetbrains.com/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="https://jetbrains.com/favicon-16x16.png"><meta name="msapplication-TileImage" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-144x144.png"><meta name="msapplication-square70x70logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-70x70.png"><meta name="msapplication-square150x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-150x150.png"><meta name="msapplication-wide310x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x150.png"><meta name="msapplication-square310x310logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x310.png"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Chapitre 2 : Interagir avec les Ressources - Pour aller plus loin | Help Instance"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="Help Instance Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation/001-01-rest-crud.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Chapitre 2 : Interagir avec les Ressources - Pour aller plus loin | Help Instance"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation/001-01-rest-crud.html#webpage",
+    "url": "writerside-documentation/001-01-rest-crud.html",
+    "name": "Chapitre 2 : Interagir avec les Ressources - Pour aller plus loin | Help Instance",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "Help Instance Help"
+}</script><!-- End Schema.org --></head><body data-id="001-01-rest-crud" data-main-title="Chapitre 2 : Interagir avec les Ressources - Pour aller plus loin" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="001-00-rest-intro.md|Chapitre 2 : Les Fondamentaux de REST - L'Essentiel"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>Help Instance  Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="001-01-rest-crud" id="001-01-rest-crud.md">Chapitre 2 : Interagir avec les Ressources - Pour aller plus loin</h1><p id="-fw9g1m_3">Dans la premi&egrave;re partie, nous avons ouvert une &quot;vitrine&quot; sur nos donn&eacute;es en permettant de les lister. C'est un excellent d&eacute;but, mais une v&eacute;ritable application a besoin d'interactivit&eacute;. Comment ajouter un nouveau livre &agrave; notre catalogue ? Corriger une coquille dans un titre ? Retirer un livre perdu ? C'est ce que nous allons d&eacute;couvrir maintenant en explorant les autres verbes HTTP.</p><section class="chapter"><h2 id="objectifs-p-dagogiques" data-toc="objectifs-p-dagogiques">Objectifs P&eacute;dagogiques</h2><p id="-fw9g1m_11">&Agrave; la fin de cette partie, vous serez capable de :</p><ul class="list _bullet" id="-fw9g1m_12"><li class="list__item" id="-fw9g1m_13"><p id="-fw9g1m_18">Impl&eacute;menter des endpoints pour les op&eacute;rations CRUD compl&egrave;tes (Create, Read, Update, Delete).</p></li><li class="list__item" id="-fw9g1m_14"><p id="-fw9g1m_19">R&eacute;cup&eacute;rer une ressource unique par son identifiant avec <code class="code" id="-fw9g1m_20">@PathVariable</code>.</p></li><li class="list__item" id="-fw9g1m_15"><p id="-fw9g1m_21">Accepter des donn&eacute;es du client dans le corps d'une requ&ecirc;te avec <code class="code" id="-fw9g1m_22">@RequestBody</code>.</p></li><li class="list__item" id="-fw9g1m_16"><p id="-fw9g1m_23">Ma&icirc;triser l'utilisation de <code class="code" id="-fw9g1m_24">ResponseEntity</code> pour contr&ocirc;ler finement les r&eacute;ponses HTTP (status, headers, body).</p></li><li class="list__item" id="-fw9g1m_17"><p id="-fw9g1m_25">Utiliser les codes de statut HTTP s&eacute;mantiques (200, 201, 204, 404).</p></li></ul></section><section class="chapter"><h2 id="introduction-de-spectateur-acteur" data-toc="introduction-de-spectateur-acteur">Introduction : De spectateur &agrave; acteur</h2><p id="-fw9g1m_26">Jusqu'&agrave; pr&eacute;sent, notre API se comportait comme un catalogue de biblioth&egrave;que : on peut le consulter (<code class="code" id="-fw9g1m_28">GET</code> /api/books), mais on ne peut pas interagir avec. Il est temps de donner des super-pouvoirs &agrave; nos utilisateurs (ou du moins, aux applications qui les repr&eacute;sentent). Nous allons leur permettre de devenir des acteurs : ajouter des livres, les modifier, et m&ecirc;me les retirer des &eacute;tag&egrave;res.</p><p id="-fw9g1m_27">Pour chaque action, nous utiliserons l'outil appropri&eacute; de la bo&icirc;te &agrave; outils HTTP : un verbe sp&eacute;cifique, une URI claire et un code de statut qui confirme si l'op&eacute;ration a r&eacute;ussi. En route pour une API vivante !</p></section><section class="chapter"><h2 id="les-op-rations-crud-en-d-tail" data-toc="les-op-rations-crud-en-d-tail">Les Op&eacute;rations CRUD en D&eacute;tail</h2><p id="-fw9g1m_29">Compl&eacute;tons notre <code class="code" id="-fw9g1m_34">BookController</code> pour g&eacute;rer le cycle de vie complet d'un livre.</p><section class="chapter"><h3 id="1-r-cup-rer-un-livre-par-son-id-read" data-toc="1-r-cup-rer-un-livre-par-son-id-read">1. R&eacute;cup&eacute;rer UN livre par son ID (Read)</h3><p id="-fw9g1m_35">Pour consulter un livre sp&eacute;cifique, nous avons besoin de son identifiant. La convention REST est de placer cet identifiant directement dans l'URL.</p><p id="-fw9g1m_36"><span class="control" id="-fw9g1m_40">Exemple d'URI :</span> <code class="code" id="-fw9g1m_41">GET /api/books/1</code></p><p id="-fw9g1m_37">Pour extraire la valeur <code class="code" id="-fw9g1m_42">1</code> de l'URL, Spring nous fournit l'annotation <code class="code" id="-fw9g1m_43">@PathVariable</code>.</p><section class="procedure-steps"><h3 id="-fw9g1m_38" data-toc="-fw9g1m_38">Implémentation de `getBookById`</h3><div class="code-block" data-lang="java">
+// Dans la classe BookController.java
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.Optional;
+
+// ... (dans la classe BookController)
+
+// @GetMapping(&quot;/{id}&quot;) complète l'URI de base &quot;/api/books&quot;.
+
+// L'URL sera donc /api/books/{id}, où {id} est une variable.
+@GetMapping(&quot;/{id}&quot;)
+public ResponseEntity&lt;Book&gt; getBookById(@PathVariable Long id) {
+    // @PathVariable lie la variable &quot;id&quot; de l'URL au paramètre &quot;id&quot; 
+    // de la méthode.
+
+    // findById retourne un Optional&lt;Book&gt;, qui est un conteneur
+    // pouvant contenir ou non une valeur. C'est une façon propre de
+    // gérer les cas où le livre n'est pas trouvé.
+    Optional&lt;Book&gt; book = this.bookRepository.findById(id);
+
+    if (book.isPresent()) {
+        // Si le livre existe, on retourne un statut 200 OK
+        // et le livre dans le corps de la réponse.
+        return ResponseEntity.ok(book.get());
+    } else {
+        // Si le livre n'existe pas, on retourne un statut 404 Not Found.
+        // .build() crée une réponse sans corps.
+        return ResponseEntity.notFound().build();
+    }
+}
+</div><ol class="list _decimal"></ol></section><aside class="prompt" data-type="note" data-title="ResponseEntity, votre couteau suisse" id="-fw9g1m_39"><p id="-fw9g1m_45">Pourquoi utiliser <code class="code" id="-fw9g1m_48">ResponseEntity</code> au lieu de retourner directement <code class="code" id="-fw9g1m_49">Book</code>? Car cela nous donne un contr&ocirc;le total sur la r&eacute;ponse HTTP. Nous pouvons d&eacute;finir :</p><ul class="list _bullet" id="-fw9g1m_46"><li class="list__item" id="-fw9g1m_50"><p id="-fw9g1m_53">Le <b id="-fw9g1m_54">code de statut</b> (200, 404, etc.)</p></li><li class="list__item" id="-fw9g1m_51"><p id="-fw9g1m_55">Les <b id="-fw9g1m_56">en-t&ecirc;tes HTTP</b> (headers)</p></li><li class="list__item" id="-fw9g1m_52"><p id="-fw9g1m_57">Le <b id="-fw9g1m_58">corps de la r&eacute;ponse</b> (body)</p></li></ul><p id="-fw9g1m_47">C'est la mani&egrave;re la plus professionnelle et flexible de construire des r&eacute;ponses d'API.</p></aside></section><section class="chapter"><h3 id="2-cr-er-un-nouveau-livre-create" data-toc="2-cr-er-un-nouveau-livre-create">2. Cr&eacute;er un nouveau livre (Create)</h3><p id="-fw9g1m_59">Pour cr&eacute;er un livre, le client doit nous envoyer ses informations (titre, ISBN, etc.). Ces donn&eacute;es voyagent dans le * <span class="emphasis" id="-fw9g1m_63">corps (body)</span>* de la requ&ecirc;te HTTP, g&eacute;n&eacute;ralement au format JSON. Nous utilisons le verbe <code class="code" id="-fw9g1m_64">POST</code>.</p><p id="-fw9g1m_60"><span class="control" id="-fw9g1m_65">Exemple de requ&ecirc;te :</span> <code class="code" id="-fw9g1m_66">POST /api/books</code> avec un corps JSON.</p><p id="-fw9g1m_61">Pour lire ce corps de requ&ecirc;te et le transformer en objet Java, nous utilisons l'annotation <code class="code" id="-fw9g1m_67">@RequestBody</code>.</p><section class="procedure-steps"><h3 id="-fw9g1m_62" data-toc="-fw9g1m_62">Implémentation de `createBook`</h3><div class="code-block" data-lang="java">
+// Dans la classe BookController.java
+
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
+
+// ... (dans la classe BookController)
+
+// @PostMapping mappe cette méthode aux requêtes POST sur /api/books
+
+@PostMapping
+public ResponseEntity&lt;Book&gt; createBook(@RequestBody Book bookToCreate) {
+    // @RequestBody dit à Spring de convertir le JSON du corps de la
+    // requête en un objet Book.
+
+    Book savedBook = this.bookRepository.save(bookToCreate);
+
+    // Bonne pratique REST : lors d'une création (POST), on retourne
+    // un statut 201 Created. On fournit aussi dans l'en-tête &quot;Location&quot;
+    // l'URL pour accéder à la nouvelle ressource.
+    URI location = ServletUriComponentsBuilder
+            .fromCurrentRequest() // Prend l'URL de la requête actuelle (/api/books)
+            .path(&quot;/{id}&quot;)        // Ajoute /{id}
+            .buildAndExpand(savedBook.getId()) // Remplace {id} par l'ID du livre créé
+            .toUri();
+
+    return ResponseEntity.created(location).body(savedBook);
+}
+</div><ol class="list _decimal"></ol></section></section><section class="chapter"><h3 id="3-mettre-jour-un-livre-update" data-toc="3-mettre-jour-un-livre-update">3. Mettre &agrave; jour un livre (Update)</h3><p id="-fw9g1m_69">La mise &agrave; jour se fait avec le verbe <code class="code" id="-fw9g1m_72">PUT</code>. Le client envoie une repr&eacute;sentation <span class="control" id="-fw9g1m_73">compl&egrave;te</span> de la ressource &agrave; l'URL de cette ressource.</p><p id="-fw9g1m_70"><span class="control" id="-fw9g1m_74">Exemple de requ&ecirc;te :</span> <code class="code" id="-fw9g1m_75">PUT /api/books/1</code> avec un corps JSON.</p><section class="procedure-steps"><h3 id="-fw9g1m_71" data-toc="-fw9g1m_71">Implémentation de `updateBook`</h3><div class="code-block" data-lang="java">
+// Dans la classe BookController.java
+
+import org.springframework.web.bind.annotation.PutMapping;
+
+// ... (dans la classe BookController)
+
+@PutMapping(&quot;/{id}&quot;)
+public ResponseEntity&lt;Book&gt; updateBook(@PathVariable Long id,
+                                       @RequestBody Book bookDetails) {
+    // On vérifie d'abord si le livre à mettre à jour existe.
+    return this.bookRepository.findById(id)
+            .map(bookToUpdate -&gt; {
+                // Si le livre existe, on met à jour ses champs.
+                bookToUpdate.setTitle(bookDetails.getTitle());
+                bookToUpdate.setIsbn(bookDetails.getIsbn());
+                bookToUpdate.setPublicationDate(bookDetails.getPublicationDate());
+                bookToUpdate.setAuthors(bookDetails.getAuthors());
+
+                Book updatedBook = this.bookRepository.save(bookToUpdate);
+
+                // On retourne un 200 OK avec le livre mis à jour.
+                return ResponseEntity.ok(updatedBook);
+            })
+            .orElse(ResponseEntity.notFound().build()); // Sinon, 404 Not Found.
+}
+</div><ol class="list _decimal"></ol></section></section><section class="chapter"><h3 id="4-supprimer-un-livre-delete" data-toc="4-supprimer-un-livre-delete">4. Supprimer un livre (Delete)</h3><p id="-fw9g1m_77">La suppression est une action directe sur une ressource identifi&eacute;e. On utilise le verbe <code class="code" id="-fw9g1m_81">DELETE</code>.</p><p id="-fw9g1m_78"><span class="control" id="-fw9g1m_82">Exemple de requ&ecirc;te :</span> <code class="code" id="-fw9g1m_83">DELETE /api/books/1</code></p><section class="procedure-steps"><h3 id="-fw9g1m_79" data-toc="-fw9g1m_79">Implémentation de `deleteBook`</h3><div class="code-block" data-lang="java">
+// Dans la classe BookController.java
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+
+// ... (dans la classe BookController)
+
+@DeleteMapping(&quot;/{id}&quot;)
+public ResponseEntity&lt;Void&gt; deleteBook(@PathVariable Long id) {
+    // On vérifie que le livre existe avant de tenter de le supprimer.
+    if (bookRepository.existsById(id)) {
+        this.bookRepository.deleteById(id);
+
+        // Bonne pratique REST : une suppression réussie retourne
+        // un statut 204 No Content. Il n'y a rien à renvoyer dans le corps.
+        return ResponseEntity.noContent().build();
+    } else {
+        return ResponseEntity.notFound().build();
+    }
+}
+</div><ol class="list _decimal"></ol></section><style>.theme-dark .plantuml > svg {filter: hue-rotate(180deg) invert(0.9);}div.plantuml {overflow-x: auto;}</style><div class="plantuml"><?xml version="1.0" encoding="us-ascii" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="151px" preserveAspectRatio="none" style="width:447px;height:151px;background:#FFFFFF;" version="1.1" viewBox="0 0 447 151" width="447px" zoomAndPan="magnify"><defs/><g><!--class BookController--><g id="elem_BookController"><rect codeLine="2" fill="#F1F1F1" height="130.4414" id="BookController" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="426" x="7" y="7"/><ellipse cx="163.75" cy="23" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M166.7231,28.6431 Q166.1421,28.9419 165.5029,29.0913 Q164.8638,29.2407 164.1582,29.2407 Q161.6514,29.2407 160.3315,27.5889 Q159.0117,25.937 159.0117,22.8159 Q159.0117,19.6865 160.3315,18.0347 Q161.6514,16.3828 164.1582,16.3828 Q164.8638,16.3828 165.5112,16.5322 Q166.1587,16.6816 166.7231,16.9805 L166.7231,19.7031 Q166.0923,19.1221 165.4988,18.8523 Q164.9053,18.5825 164.2744,18.5825 Q162.9297,18.5825 162.2449,19.6492 Q161.5601,20.7158 161.5601,22.8159 Q161.5601,24.9077 162.2449,25.9744 Q162.9297,27.041 164.2744,27.041 Q164.9053,27.041 165.4988,26.7712 Q166.0923,26.5015 166.7231,25.9204 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="104" x="184.25" y="28.291">BookController</text><line style="stroke:#181818;stroke-width:0.5;" x1="8" x2="432" y1="39" y2="39"/><line style="stroke:#181818;stroke-width:0.5;" x1="8" x2="432" y1="47" y2="47"/><ellipse cx="18" cy="60.7441" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="178" x="27" y="64.5352">getAllBooks(): List&lt;Book&gt;</text><ellipse cx="18" cy="77.2324" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="317" x="27" y="81.0234">getBookById(id: Long): ResponseEntity&lt;Book&gt;</text><ellipse cx="18" cy="93.7207" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="331" x="27" y="97.5117">createBook(book: Book): ResponseEntity&lt;Book&gt;</text><ellipse cx="18" cy="110.209" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="400" x="27" y="114">updateBook(id: Long, book: Book): ResponseEntity&lt;Book&gt;</text><ellipse cx="18" cy="126.6973" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="306" x="27" y="130.4883">deleteBook(id: Long): ResponseEntity&lt;Void&gt;</text></g><!--SRC=[Iyv9B2vMSChFptREpoifoi_9IIrIgEPIKD1MI4yjSSp90KaLQsXQAVXa5fVOW7XsC5aGnwdICqKZCmKedP-N3bGLb5fSa9zNdEgQLv9PKecaFhaeDR4a5SJNI08ILc0xyMaeBKY1QO2PhwD0dDQKr9nKDAsOoiFoCrFik6e1]--></g></svg></div></section></section><section class="chapter"><h2 id="exercice-3-compl-ter-le-crud-pour-les-auteurs" data-toc="exercice-3-compl-ter-le-crud-pour-les-auteurs">Exercice 3 : Compl&eacute;ter le CRUD pour les Auteurs</h2><p id="-fw9g1m_85">Vous avez vu comment faire pour les livres, &agrave; vous de jouer pour les auteurs !</p><p id="-fw9g1m_86"><span class="control" id="-fw9g1m_89">&Eacute;nonc&eacute; :</span> Reprenez votre <code class="code" id="-fw9g1m_90">AuthorController</code> de l'exercice pr&eacute;c&eacute;dent et ajoutez-y les m&eacute;thodes pour :</p><ol class="list _decimal" id="-fw9g1m_87" type="1"><li class="list__item" id="-fw9g1m_91"><p id="-fw9g1m_95"><span class="control" id="-fw9g1m_97">R&eacute;cup&eacute;rer un auteur par son ID.</span></p><ul class="list _bullet" id="-fw9g1m_96"><li class="list__item" id="-fw9g1m_98"><p id="-fw9g1m_102">Verbe : <code class="code" id="-fw9g1m_103">GET</code></p></li><li class="list__item" id="-fw9g1m_99"><p id="-fw9g1m_104">URI : <code class="code" id="-fw9g1m_105">/api/authors/{id}</code></p></li><li class="list__item" id="-fw9g1m_100"><p id="-fw9g1m_106">R&eacute;ponse succ&egrave;s : <code class="code" id="-fw9g1m_107">200 OK</code> avec l'auteur.</p></li><li class="list__item" id="-fw9g1m_101"><p id="-fw9g1m_108">R&eacute;ponse erreur : <code class="code" id="-fw9g1m_109">404 Not Found</code> si l'auteur n'existe pas.</p></li></ul></li><li class="list__item" id="-fw9g1m_92"><p id="-fw9g1m_110"><span class="control" id="-fw9g1m_112">Cr&eacute;er un nouvel auteur.</span></p><ul class="list _bullet" id="-fw9g1m_111"><li class="list__item" id="-fw9g1m_113"><p id="-fw9g1m_116">Verbe : <code class="code" id="-fw9g1m_117">POST</code></p></li><li class="list__item" id="-fw9g1m_114"><p id="-fw9g1m_118">URI : <code class="code" id="-fw9g1m_119">/api/authors</code></p></li><li class="list__item" id="-fw9g1m_115"><p id="-fw9g1m_120">R&eacute;ponse succ&egrave;s : <code class="code" id="-fw9g1m_121">201 Created</code> avec l'auteur cr&eacute;&eacute; et l'en-t&ecirc;te <code class="code" id="-fw9g1m_122">Location</code>.</p></li></ul></li><li class="list__item" id="-fw9g1m_93"><p id="-fw9g1m_123"><span class="control" id="-fw9g1m_125">Mettre &agrave; jour un auteur existant.</span></p><ul class="list _bullet" id="-fw9g1m_124"><li class="list__item" id="-fw9g1m_126"><p id="-fw9g1m_130">Verbe : <code class="code" id="-fw9g1m_131">PUT</code></p></li><li class="list__item" id="-fw9g1m_127"><p id="-fw9g1m_132">URI : <code class="code" id="-fw9g1m_133">/api/authors/{id}</code></p></li><li class="list__item" id="-fw9g1m_128"><p id="-fw9g1m_134">R&eacute;ponse succ&egrave;s : <code class="code" id="-fw9g1m_135">200 OK</code> avec l'auteur mis &agrave; jour.</p></li><li class="list__item" id="-fw9g1m_129"><p id="-fw9g1m_136">R&eacute;ponse erreur : <code class="code" id="-fw9g1m_137">404 Not Found</code>.</p></li></ul></li><li class="list__item" id="-fw9g1m_94"><p id="-fw9g1m_138"><span class="control" id="-fw9g1m_140">Supprimer un auteur.</span></p><ul class="list _bullet" id="-fw9g1m_139"><li class="list__item" id="-fw9g1m_141"><p id="-fw9g1m_145">Verbe : <code class="code" id="-fw9g1m_146">DELETE</code></p></li><li class="list__item" id="-fw9g1m_142"><p id="-fw9g1m_147">URI : <code class="code" id="-fw9g1m_148">/api/authors/{id}</code></p></li><li class="list__item" id="-fw9g1m_143"><p id="-fw9g1m_149">R&eacute;ponse succ&egrave;s : <code class="code" id="-fw9g1m_150">204 No Content</code>.</p></li><li class="list__item" id="-fw9g1m_144"><p id="-fw9g1m_151">R&eacute;ponse erreur : <code class="code" id="-fw9g1m_152">404 Not Found</code>.</p></li></ul></li></ol><p id="-fw9g1m_88">Testez chaque endpoint avec votre client HTTP.</p></section><section class="chapter"><div class="collapse"><div class="collapse__title"><h2 id="correction-exercice-3" data-toc="correction-exercice-3">Correction exercice 3</h2></div><div class="collapse__content"><p id="-fw9g1m_153">Voici la solution compl&egrave;te pour le <code class="code" id="-fw9g1m_158">AuthorController</code>.</p><p id="-fw9g1m_154"><span class="control" id="-fw9g1m_159"><code class="code" id="-fw9g1m_160">AuthorController.java</code></span></p><div class="code-block" data-lang="java">
+package fr.formation.spring.bibliotech.api;
+
+import fr.formation.spring.bibliotech.dal.entities.Author;
+import fr.formation.spring.bibliotech.dal.repositories.AuthorRepository;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
+import java.util.List;
+
+@RestController
+@RequestMapping(&quot;/api/authors&quot;)
+public class AuthorController {
+
+    private final AuthorRepository authorRepository;
+
+    public AuthorController(AuthorRepository authorRepository) {
+        this.authorRepository = authorRepository;
+    }
+
+    // GET All (déjà fait)
+    @GetMapping
+    public List&lt;Author&gt; getAllAuthors() {
+        return this.authorRepository.findAll();
+    }
+
+    // 1. GET by ID
+    @GetMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;Author&gt; getAuthorById(@PathVariable Long id) {
+        return this.authorRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    // 2. POST (Create)
+    @PostMapping
+    public ResponseEntity&lt;Author&gt; createAuthor(@RequestBody Author author) {
+        Author savedAuthor = this.authorRepository.save(author);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest().path(&quot;/{id}&quot;)
+                .buildAndExpand(savedAuthor.getId()).toUri();
+        return ResponseEntity.created(location).body(savedAuthor);
+    }
+
+    // 3. PUT (Update)
+    @PutMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;Author&gt; updateAuthor(@PathVariable Long id,
+                                               @RequestBody Author authorDetails) {
+        return this.authorRepository.findById(id)
+                .map(author -&gt; {
+                    author.setFirstName(authorDetails.getFirstName());
+                    author.setLastName(authorDetails.getLastName());
+                    Author updatedAuthor = this.authorRepository.save(author);
+                    return ResponseEntity.ok(updatedAuthor);
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    // 4. DELETE
+    @DeleteMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;Void&gt; deleteAuthor(@PathVariable Long id) {
+        if (authorRepository.existsById(id)) {
+            authorRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+}
+</div><p id="-fw9g1m_156"><span class="control" id="-fw9g1m_161">Fichier de requ&ecirc;tes <code class="code" id="-fw9g1m_162">requests.http</code> pour tester</span></p><div class="code-block" data-lang="http">
+### 1. Récupérer l'auteur avec l'ID 1
+GET http://localhost:8080/api/authors/1
+
+### 1b. Récupérer un auteur qui n'existe pas (doit retourner 404)
+GET http://localhost:8080/api/authors/999
+
+### 2. Créer un nouvel auteur
+POST http://localhost:8080/api/authors
+Content-Type: application/json
+
+{
+  &quot;firstName&quot;: &quot;George&quot;,
+  &quot;lastName&quot;: &quot;Orwell&quot;
+}
+
+### 3. Mettre à jour l'auteur avec l'ID 1
+PUT http://localhost:8080/api/authors/1
+Content-Type: application/json
+
+{
+  &quot;firstName&quot;: &quot;Joanne&quot;,
+  &quot;lastName&quot;: &quot;Rowling&quot;
+}
+
+### 4. Supprimer l'auteur avec l'ID 2
+DELETE http://localhost:8080/api/authors/2
+
+### 4b. Tenter de supprimer un auteur qui n'existe plus (doit retourner 404)
+DELETE http://localhost:8080/api/authors/2
+</div></div></div></section><section class="chapter"><h2 id="auto-valuation" data-toc="auto-valuation">Auto-&eacute;valuation</h2><ol class="list _decimal" id="-fw9g1m_163" type="1"><li class="list__item" id="-fw9g1m_164"><p id="-fw9g1m_169"><span class="control" id="-fw9g1m_170">(QCM)</span> Quelle annotation est utilis&eacute;e pour extraire un identifiant de l'URI, comme dans <code class="code" id="-fw9g1m_171">/api/books/123</code>? a) <code class="code" id="-fw9g1m_172">@RequestBody</code> b) <code class="code" id="-fw9g1m_173">@RequestParam</code> c) <code class="code" id="-fw9g1m_174">@PathVariable</code> d) <code class="code" id="-fw9g1m_175">@RequestHeader</code></p></li><li class="list__item" id="-fw9g1m_165"><p id="-fw9g1m_176"><span class="control" id="-fw9g1m_177">_ (Question ouverte)_</span> Quelle est la principale diff&eacute;rence de s&eacute;mantique (d'intention) entre <code class="code" id="-fw9g1m_178">POST</code> et <code class="code" id="-fw9g1m_179">PUT</code>?</p></li><li class="list__item" id="-fw9g1m_166"><p id="-fw9g1m_180"><span class="control" id="-fw9g1m_181">(QCM)</span> Quel code de statut HTTP est id&eacute;al pour une r&eacute;ponse &agrave; une requ&ecirc;te <code class="code" id="-fw9g1m_182">POST</code> qui a r&eacute;ussi &agrave; cr&eacute;er une ressource ? a) <code class="code" id="-fw9g1m_183">200 OK</code> b) <code class="code" id="-fw9g1m_184">201 Created</code> c) <code class="code" id="-fw9g1m_185">204 No Content</code> d) <code class="code" id="-fw9g1m_186">400 Bad Request</code></p></li><li class="list__item" id="-fw9g1m_167"><p id="-fw9g1m_187"><span class="control" id="-fw9g1m_188">_ (Question ouverte)_</span> Pourquoi est-il pr&eacute;f&eacute;rable d'utiliser <code class="code" id="-fw9g1m_189">ResponseEntity&lt;T&gt;</code> plut&ocirc;t que de retourner directement un objet <code class="code" id="-fw9g1m_190">T</code> depuis une m&eacute;thode de contr&ocirc;leur ? Donnez au moins deux raisons.</p></li><li class="list__item" id="-fw9g1m_168"><p id="-fw9g1m_191"><span class="control" id="-fw9g1m_192">_ (Question ouverte)_</span> Que devrait retourner une API si un client tente d'ex&eacute;cuter une requ&ecirc;te <code class="code" id="-fw9g1m_193">GET</code> sur une ressource qui n'existe pas (par exemple, <code class="code" id="-fw9g1m_194">GET /api/books/999</code>) ?</p></li></ol></section><section class="chapter"><h2 id="conclusion" data-toc="conclusion">Conclusion</h2><p id="-fw9g1m_195">Le pas que vous venez de franchir est immense ! Votre API n'est plus un simple catalogue en lecture seule, c'est une application dynamique et interactive. Vous ma&icirc;trisez maintenant le cycle de vie complet d'une ressource en utilisant les verbes HTTP et les conventions REST. Vous savez comment lire, cr&eacute;er, mettre &agrave; jour et supprimer des donn&eacute;es, tout en communiquant de mani&egrave;re professionnelle avec le client gr&acirc;ce aux codes de statut HTTP.</p><p id="-fw9g1m_196">Cependant, en regardant de plus pr&egrave;s les donn&eacute;es JSON que nous &eacute;changeons, vous avez peut-&ecirc;tre remarqu&eacute; un probl&egrave;me : nous exposons directement nos entit&eacute;s de base de donn&eacute;es, avec toutes leurs relations, ce qui peut entra&icirc;ner des boucles infinies et exposer des d&eacute;tails internes. Dans le prochain chapitre, nous allons r&eacute;soudre ce probl&egrave;me en introduisant une couche d'abstraction essentielle : les DTO (Data Transfer Objects).</p></section><div class="last-modified">13 juin 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="001-00-rest-intro.html" class="navigation-links__prev">Chapitre 2 : Les Fondamentaux de REST - L'Essentiel</a><a href="002-00-managing-data.html" class="navigation-links__next">Chapitre 3 : Gestion des Donn&eacute;es d'Entr&eacute;e - L'Essentiel</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b776/app.js"></script></body></html>

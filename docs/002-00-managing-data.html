@@ -1,0 +1,278 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#307FFF"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-06-27T16:21:41.790403"><title>Chapitre 3 : Gestion des Donn&eacute;es d'Entr&eacute;e - L'Essentiel | Help Instance</title><script type="application/json" id="virtual-toc-data">[{"id":"objectifs-p-dagogiques","level":0,"title":"Objectifs Pédagogiques","anchor":"#objectifs-p-dagogiques"},{"id":"introduction-le-costume-de-sc-ne-de-vos-donn-es","level":0,"title":"Introduction : Le Costume de Scène de Vos Données","anchor":"#introduction-le-costume-de-sc-ne-de-vos-donn-es"},{"id":"le-probl-me-exposer-les-entit-s-jpa","level":0,"title":"Le Problème : Exposer les Entités JPA","anchor":"#le-probl-me-exposer-les-entit-s-jpa"},{"id":"la-solution-les-data-transfer-objects-dto","level":0,"title":"La Solution : Les Data Transfer Objects (DTO)","anchor":"#la-solution-les-data-transfer-objects-dto"},{"id":"le-mapper-le-traducteur","level":0,"title":"Le \"Mapper\" : Le Traducteur","anchor":"#le-mapper-le-traducteur"},{"id":"refactorisation-du-contr-leur","level":0,"title":"Refactorisation du Contrôleur","anchor":"#refactorisation-du-contr-leur"},{"id":"exercice-4-appliquer-le-pattern-dto-aux-auteurs","level":0,"title":"Exercice 4 : Appliquer le Pattern DTO aux Auteurs","anchor":"#exercice-4-appliquer-le-pattern-dto-aux-auteurs"},{"id":"correction-exercice-4","level":0,"title":"Correction exercice 4","anchor":"#correction-exercice-4"},{"id":"auto-valuation","level":0,"title":"Auto-évaluation","anchor":"#auto-valuation"},{"id":"conclusion","level":0,"title":"Conclusion","anchor":"#conclusion"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b776/app.css" rel="stylesheet"><meta name="msapplication-TileColor" content="#000000"><link rel="apple-touch-icon" sizes="180x180" href="https://jetbrains.com/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://jetbrains.com/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="https://jetbrains.com/favicon-16x16.png"><meta name="msapplication-TileImage" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-144x144.png"><meta name="msapplication-square70x70logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-70x70.png"><meta name="msapplication-square150x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-150x150.png"><meta name="msapplication-wide310x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x150.png"><meta name="msapplication-square310x310logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x310.png"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Chapitre 3 : Gestion des Donn&eacute;es d'Entr&eacute;e - L'Essentiel | Help Instance"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="Help Instance Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation/002-00-managing-data.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Chapitre 3 : Gestion des Donn&eacute;es d'Entr&eacute;e - L'Essentiel | Help Instance"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation/002-00-managing-data.html#webpage",
+    "url": "writerside-documentation/002-00-managing-data.html",
+    "name": "Chapitre 3 : Gestion des Donn&eacute;es d'Entr&eacute;e - L'Essentiel | Help Instance",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "Help Instance Help"
+}</script><!-- End Schema.org --></head><body data-id="002-00-managing-data" data-main-title="Chapitre 3 : Gestion des Données d'Entrée - L'Essentiel" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs=""><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>Help Instance  Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="002-00-managing-data" id="002-00-managing-data.md">Chapitre 3 : Gestion des Données d'Entrée - L'Essentiel</h1><p id="vr0o3u_3">Nous avons une API fonctionnelle, capable de r&eacute;aliser des op&eacute;rations CRUD. C'est formidable ! Mais en y regardant de plus pr&egrave;s, nous avons un petit souci architectural. Nos endpoints &quot;parlent&quot; directement avec nos entit&eacute;s JPA. C'est un peu comme si un acteur venait sur sc&egrave;ne directement depuis sa loge, sans costume ni maquillage. Le public verrait tout, y compris les d&eacute;tails des coulisses qu'il n'est pas cens&eacute; voir. Il est temps d'habiller nos donn&eacute;es pour la sc&egrave;ne !</p><section class="chapter"><h2 id="objectifs-p-dagogiques" data-toc="objectifs-p-dagogiques">Objectifs P&eacute;dagogiques</h2><p id="vr0o3u_14">&Agrave; la fin de cette partie, vous serez capable de :</p><ul class="list _bullet" id="vr0o3u_15"><li class="list__item" id="vr0o3u_16"><p id="vr0o3u_21">Comprendre les risques li&eacute;s &agrave; l'exposition directe des entit&eacute;s JPA.</p></li><li class="list__item" id="vr0o3u_17"><p id="vr0o3u_22">D&eacute;finir le r&ocirc;le et l'int&eacute;r&ecirc;t d'un DTO (Data Transfer Object).</p></li><li class="list__item" id="vr0o3u_18"><p id="vr0o3u_23">Cr&eacute;er des DTOs distincts pour les donn&eacute;es en entr&eacute;e (cr&eacute;ation/mise &agrave; jour) et en sortie (lecture).</p></li><li class="list__item" id="vr0o3u_19"><p id="vr0o3u_24">Mettre en place une couche de &quot;mapping&quot; pour convertir les entit&eacute;s en DTOs, et vice-versa.</p></li><li class="list__item" id="vr0o3u_20"><p id="vr0o3u_25">Refactoriser un contr&ocirc;leur pour utiliser les DTOs, cr&eacute;ant ainsi un contrat d'API clair et stable.</p></li></ul></section><section class="chapter"><h2 id="introduction-le-costume-de-sc-ne-de-vos-donn-es" data-toc="introduction-le-costume-de-sc-ne-de-vos-donn-es">Introduction : Le Costume de Sc&egrave;ne de Vos Donn&eacute;es</h2><p id="vr0o3u_26">Imaginez notre entit&eacute; JPA <code class="code" id="vr0o3u_29">Book</code> comme un acteur. Elle poss&egrave;de une vie interne riche et complexe : des relations avec d'autres entit&eacute;s (<code class="code" id="vr0o3u_30">Author</code>), des annotations techniques pour la base de donn&eacute;es (<code class="code" id="vr0o3u_31">@Id</code>, <code class="code" id="vr0o3u_32">@Entity</code>), etc. C'est sa &quot; vraie&quot; nature, en coulisses.</p><p id="vr0o3u_27">Maintenant, imaginez le client de notre API (une application mobile, un site web) comme le public. Le public n'a pas besoin de conna&icirc;tre tous les d&eacute;tails internes de l'acteur. Il a juste besoin de voir le personnage, avec son costume et son dialogue. Ce costume, c'est le <span class="control" id="vr0o3u_33">DTO (Data Transfer Object)</span>.</p><p id="vr0o3u_28">Le DTO est une repr&eacute;sentation sur mesure de nos donn&eacute;es, con&ccedil;ue sp&eacute;cifiquement pour la communication. Il agit comme un contrat, une fa&ccedil;ade qui prot&egrave;ge notre logique interne tout en pr&eacute;sentant au client exactement ce dont il a besoin, ni plus, ni moins.</p></section><section class="chapter"><h2 id="le-probl-me-exposer-les-entit-s-jpa" data-toc="le-probl-me-exposer-les-entit-s-jpa">Le Probl&egrave;me : Exposer les Entit&eacute;s JPA</h2><p id="vr0o3u_34">Exposer directement nos entit&eacute;s <code class="code" id="vr0o3u_36">@Entity</code> dans notre API est une pratique courante pour les projets simples, mais elle pr&eacute;sente plusieurs inconv&eacute;nients majeurs &agrave; mesure que l'application grandit :</p><ol class="list _decimal" id="vr0o3u_35" type="1"><li class="list__item" id="vr0o3u_37"><p id="vr0o3u_41"><span class="control" id="vr0o3u_42">Risques de S&eacute;curit&eacute; :</span> On peut exposer accidentellement des donn&eacute;es sensibles (par exemple, un champ <code class="code" id="vr0o3u_43">internalNotes</code> sur un livre).</p></li><li class="list__item" id="vr0o3u_38"><p id="vr0o3u_44"><span class="control" id="vr0o3u_45">Couplage Fort :</span> Le contrat de votre API est directement li&eacute; &agrave; la structure de votre base de donn&eacute;es. Si vous renommez une colonne en base, vous cassez votre API pour tous vos clients.</p></li><li class="list__item" id="vr0o3u_39"><p id="vr0o3u_46"><span class="control" id="vr0o3u_47">Probl&egrave;mes de S&eacute;rialisation :</span> Comme nous l'avons vu, les relations bidirectionnelles (<code class="code" id="vr0o3u_48">Book</code>-&gt; <code class="code" id="vr0o3u_49">Author</code>-&gt; <code class="code" id="vr0o3u_50">Book</code>...) peuvent provoquer des boucles infinies lors de la conversion en JSON.</p></li><li class="list__item" id="vr0o3u_40"><p id="vr0o3u_51"><span class="control" id="vr0o3u_52">Manque de Flexibilit&eacute; :</span> Vous &ecirc;tes oblig&eacute; d'envoyer toute l'entit&eacute;, m&ecirc;me si le client n'a besoin que de deux champs. Pour la cr&eacute;ation, le client pourrait envoyer des champs qu'il n'est pas cens&eacute; modifier, comme l'ID.</p></li></ol></section><section class="chapter"><h2 id="la-solution-les-data-transfer-objects-dto" data-toc="la-solution-les-data-transfer-objects-dto">La Solution : Les Data Transfer Objects (DTO)</h2><p id="vr0o3u_53">Un DTO est une simple classe Java (un POJO) dont le seul but est de transporter des donn&eacute;es entre les couches de l'application.</p><section class="procedure-steps"><h3 id="vr0o3u_54" data-toc="vr0o3u_54">Création de nos DTOs pour le Livre</h3><p id="vr0o3u_55">Nous allons cr&eacute;er deux types de DTOs pour nos livres :</p><ul class="list _bullet" id="vr0o3u_56"><li class="list__item" id="vr0o3u_60"><p id="vr0o3u_62"><code class="code" id="vr0o3u_63">BookDto</code>: Pour repr&eacute;senter un livre en sortie (ce que le client re&ccedil;oit).</p></li><li class="list__item" id="vr0o3u_61"><p id="vr0o3u_64"><code class="code" id="vr0o3u_65">BookSaveDto</code>: Pour repr&eacute;senter les donn&eacute;es d'un livre en entr&eacute;e (ce que le client envoie pour cr&eacute;er ou modifier).</p></li></ul><ol class="list _decimal" id="vr0o3u_57" type="1"><li class="list__item" id="vr0o3u_66"><p id="vr0o3u_68">Cr&eacute;ez un nouveau package <code class="code" id="vr0o3u_69">fr.formation.spring.bibliotech.api.dto</code>.</p></li><li class="list__item" id="vr0o3u_67"><p id="vr0o3u_70">Cr&eacute;ez-y les classes suivantes :</p></li></ol><div class="tabs" id="vr0o3u_58" data-anchors="[vr0o3u_71]"><div class="tabs__content" data-gtm="tab" id="vr0o3u_71" data-title="BookDto.java (Sortie)"><p>```java // package fr.formation.spring.bibliotech.api.dto; </p><p id="vr0o3u_72">import lombok.Data; import java.time.LocalDate; import java.util.Set;</p><p id="vr0o3u_73">// DTO pour la repr&eacute;sentation d'un livre en sortie. @Data public class BookDto { private Long id; private String title; private String isbn; private LocalDate publicationDate; // On peut aussi utiliser un DTO pour l'auteur ici ! // Pour l'instant, gardons le nom. private Set authorNames; }</p><div class="code-block" data-lang="none" data-title="None">
+&lt;/tab&gt;
+&lt;tab title=&quot;BookSaveDto.java (Entrée)&quot;&gt;
+```java
+// package fr.formation.spring.bibliotech.api.dto;
+
+import lombok.Data;
+import java.time.LocalDate;
+import java.util.Set;
+
+// DTO pour les données de création/mise à jour d'un livre.
+@Data
+public class BookSaveDto {
+    private String title;
+    private String isbn;
+    private LocalDate publicationDate;
+    // Pour créer un livre, le client nous donne les IDs des auteurs.
+    private Set&lt;Long&gt; authorIds; 
+}
+</div></div></div><aside class="prompt" data-type="note" data-title="Pourquoi deux DTOs ?" id="vr0o3u_59"><p id="vr0o3u_76">Remarquez la diff&eacute;rence :</p><ul class="list _bullet" id="vr0o3u_77"><li class="list__item" id="vr0o3u_78"><p><b id="vr0o3u_80">BookDto</b> contient un <code class="code" id="vr0o3u_81">id</code> (g&eacute;n&eacute;r&eacute; par le serveur) et des <code class="code" id="vr0o3u_82">authorNames</code> pour une lecture facile.</p></li><li class="list__item" id="vr0o3u_79"><p><b id="vr0o3u_83">BookSaveDto</b> n'a pas d' <code class="code" id="vr0o3u_84">id</code> (le client ne doit pas le sp&eacute;cifier) et demande des <code class="code" id="vr0o3u_85">authorIds</code>, car c'est plus simple pour le client de fournir les IDs des auteurs existants que leurs noms complets.</p></li></ul><p> Cette s&eacute;paration nous donne une flexibilit&eacute; et une s&eacute;curit&eacute; maximales.</p></aside><ol class="list _decimal"></ol></section></section><section class="chapter"><h2 id="le-mapper-le-traducteur" data-toc="le-mapper-le-traducteur">Le &quot;Mapper&quot; : Le Traducteur</h2><p id="vr0o3u_86">Maintenant que nous avons nos DTOs, il nous faut un moyen de &quot;traduire&quot; une <code class="code" id="vr0o3u_89">Book</code> (entit&eacute;) en <code class="code" id="vr0o3u_90">BookDto</code> (DTO de sortie), et un <code class="code" id="vr0o3u_91">BookSaveDto</code> (DTO d'entr&eacute;e) en <code class="code" id="vr0o3u_92">Book</code> (entit&eacute;). C'est le r&ocirc;le du mapper.</p><p id="vr0o3u_87">Pour commencer, nous allons cr&eacute;er un mapper manuellement. C'est une classe de service simple.</p><section class="procedure-steps"><h3 id="vr0o3u_88" data-toc="vr0o3u_88">Création du BookMapper</h3><p>1. Cr&eacute;ez un nouveau package `fr.formation.spring.bibliotech.api.mapper`. 2. Cr&eacute;ez-y la classe `BookMapper.java`. </p><div class="code-block" data-lang="java">
+// package fr.formation.spring.bibliotech.api.mapper;
+
+import fr.formation.spring.bibliotech.api.dto.BookDto;
+import fr.formation.spring.bibliotech.api.dto.BookSaveDto;
+import fr.formation.spring.bibliotech.dal.entities.Author;
+import fr.formation.spring.bibliotech.dal.entities.Book;
+import fr.formation.spring.bibliotech.dal.repositories.AuthorRepository;
+import org.springframework.stereotype.Component;
+
+import java.util.stream.Collectors;
+
+@Component // Pour que Spring puisse l'injecter dans notre contrôleur
+public class BookMapper {
+
+    private final AuthorRepository authorRepository;
+
+    public BookMapper(AuthorRepository authorRepository) {
+        this.authorRepository = authorRepository;
+    }
+
+    // Convertit une Entité Book en DTO de sortie BookDto
+    public BookDto toDto(Book entity) {
+        if (entity == null) {
+            return null;
+        }
+        BookDto dto = new BookDto();
+        dto.setId(entity.getId());
+        dto.setTitle(entity.getTitle());
+        dto.setIsbn(entity.getIsbn());
+        dto.setPublicationDate(entity.getPublicationDate());
+
+        // Pour les auteurs, on extrait juste leur nom complet.
+        if (entity.getAuthors() != null) {
+            dto.setAuthorNames(entity.getAuthors().stream()
+                    .map(author -&gt; author.getFirstName() + &quot; &quot; + author.getLastName())
+                    .collect(Collectors.toSet()));
+        }
+        return dto;
+    }
+
+    // Convertit un DTO d'entrée BookSaveDto en Entité Book
+    public Book toEntity(BookSaveDto dto) {
+        if (dto == null) {
+            return null;
+        }
+        Book entity = new Book();
+        entity.setTitle(dto.getTitle());
+        entity.setIsbn(dto.getIsbn());
+        entity.setPublicationDate(dto.getPublicationDate());
+
+        // Pour les IDs des auteurs, on va chercher les entités
+        // correspondantes dans la base.
+        if (dto.getAuthorIds() != null) {
+            entity.setAuthors(dto.getAuthorIds().stream()
+                    .map(authorRepository::findById)
+                    .filter(java.util.Optional::isPresent)
+                    .map(java.util.Optional::get)
+                    .collect(Collectors.toSet()));
+        }
+        return entity;
+    }
+}
+</div><ol class="list _decimal"></ol></section></section><section class="chapter"><h2 id="refactorisation-du-contr-leur" data-toc="refactorisation-du-contr-leur">Refactorisation du Contr&ocirc;leur</h2><p id="vr0o3u_94">Arm&eacute;s de nos DTOs et de notre mapper, nous pouvons enfin nettoyer notre <code class="code" id="vr0o3u_97">BookController</code>.</p><section class="procedure-steps"><h3 id="vr0o3u_95" data-toc="vr0o3u_95">Mise à jour du BookController</h3><div class="code-block" data-lang="java">
+// package fr.formation.spring.bibliotech.api;
+// ... imports
+
+import fr.formation.spring.bibliotech.api.dto.BookDto;
+import fr.formation.spring.bibliotech.api.dto.BookSaveDto;
+import fr.formation.spring.bibliotech.api.mapper.BookMapper;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+
+@RestController
+@RequestMapping(&quot;/api/books&quot;)
+public class BookController {
+
+    private final BookRepository bookRepository;
+    private final BookMapper bookMapper; // On injecte notre mapper
+
+    public BookController(BookRepository bookRepository, BookMapper bookMapper) {
+        this.bookRepository = bookRepository;
+        this.bookMapper = bookMapper;
+    }
+
+    // L'endpoint GET retourne maintenant une liste de BookDto
+    @GetMapping
+    public List&lt;BookDto&gt; getAllBooks() {
+        return this.bookRepository.findAll().stream()
+                .map(this.bookMapper::toDto) // On mappe chaque livre
+                .collect(Collectors.toList());
+    }
+
+    // La création prend maintenant un BookSaveDto en entrée
+    @PostMapping
+    public ResponseEntity&lt;BookDto&gt; createBook(@RequestBody BookSaveDto bookToCreate) {
+        // On convertit le DTO d'entrée en entité
+        Book newBook = this.bookMapper.toEntity(bookToCreate);
+        Book savedBook = this.bookRepository.save(newBook);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest().path(&quot;/{id}&quot;)
+                .buildAndExpand(savedBook.getId()).toUri();
+
+        // On retourne le DTO de sortie
+        return ResponseEntity.created(location).body(this.bookMapper.toDto(savedBook));
+    }
+
+    // ... les autres méthodes (GET by ID, PUT, DELETE) 
+    // devraient être mises à jour de la même manière.
+}
+</div><ol class="list _decimal"></ol></section><style>.theme-dark .plantuml > svg {filter: hue-rotate(180deg) invert(0.9);}div.plantuml {overflow-x: auto;}</style><div class="plantuml"><?xml version="1.0" encoding="us-ascii" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="501px" preserveAspectRatio="none" style="width:577px;height:501px;background:#FFFFFF;" version="1.1" viewBox="0 0 577 501" width="577px" zoomAndPan="magnify"><defs/><g><!--cluster API Layer--><g id="cluster_API Layer"><path d="M8.5,6 L76.5,6 A3.75,3.75 0 0 1 79,8.5 L86,28.4883 L298.5,28.4883 A2.5,2.5 0 0 1 301,30.9883 L301,492.45 A2.5,2.5 0 0 1 298.5,494.95 L8.5,494.95 A2.5,2.5 0 0 1 6,492.45 L6,8.5 A2.5,2.5 0 0 1 8.5,6 " fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="6" x2="86" y1="28.4883" y2="28.4883"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="67" x="10" y="21.5352">API Layer</text></g><!--cluster Service/Data Layer--><g id="cluster_Service/Data Layer"><path d="M327.5,273.97 L462.5,273.97 A3.75,3.75 0 0 1 465,276.47 L472,296.4583 L567.5,296.4583 A2.5,2.5 0 0 1 570,298.9583 L570,492.45 A2.5,2.5 0 0 1 567.5,494.95 L327.5,494.95 A2.5,2.5 0 0 1 325,492.45 L325,276.47 A2.5,2.5 0 0 1 327.5,273.97 " fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="325" x2="472" y1="296.4583" y2="296.4583"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="134" x="329" y="289.5052">Service/Data Layer</text></g><!--entity C--><g id="elem_C"><rect fill="#F1F1F1" height="46.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="80" x="173" y="41"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="233" y="46"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="231" y="48"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="231" y="52"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="40" x="188" y="74.5352">Client</text></g><!--entity Ctrl--><g id="elem_Ctrl"><rect fill="#F1F1F1" height="46.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="144" x="141" y="164.49"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="265" y="169.49"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="263" y="171.49"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="263" y="175.49"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="104" x="156" y="198.0252">BookController</text></g><!--entity BookDto--><g id="elem_BookDto"><rect fill="#F1F1F1" height="46.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="98" x="22" y="432.46"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="100" y="437.46"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="98" y="439.46"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="98" y="443.46"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="58" x="37" y="465.9952">BookDto</text></g><!--entity BookSaveDto--><g id="elem_BookSaveDto"><rect fill="#F1F1F1" height="46.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="129" x="155.5" y="432.46"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="264.5" y="437.46"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="262.5" y="439.46"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="262.5" y="443.46"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="89" x="170.5" y="465.9952">BookSaveDto</text></g><!--entity BookMapper--><g id="elem_BookMapper"><rect fill="#F1F1F1" height="46.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="126" x="153" y="308.97"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="259" y="313.97"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="257" y="315.97"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="257" y="319.97"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="86" x="168" y="342.5052">BookMapper</text></g><!--entity E--><g id="elem_E"><rect fill="#F1F1F1" height="46.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="74" x="341" y="432.46"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="395" y="437.46"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="393" y="439.46"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="393" y="443.46"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="34" x="356" y="465.9952">Book</text></g><!--entity Repo--><g id="elem_Repo"><rect fill="#F1F1F1" height="46.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="147" x="341.5" y="308.97"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="468.5" y="313.97"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="466.5" y="315.97"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="466.5" y="319.97"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="107" x="356.5" y="342.5052">BookRepository</text></g><!--entity DB--><g id="elem_DB"><rect fill="#F1F1F1" height="46.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="103" x="450.5" y="432.46"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="533.5" y="437.46"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="531.5" y="439.46"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="531.5" y="443.46"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="63" x="465.5" y="465.9952">Database</text></g><!--link C to Ctrl--><g id="link_C_Ctrl"><path d="M213,93.81 C213,115.63 213,136.5 213,158.28 " fill="none" id="C-Ctrl" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="213,87.81,209,96.81,213,92.81,217,96.81,213,87.81" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="213,164.28,217,155.28,213,159.28,209,155.28,213,164.28" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="31" x="214" y="131.0584">JSON</text></g><!--link Ctrl to BookMapper--><g id="link_Ctrl_BookMapper"><path d="M213.48,211.31 C214.04,237.99 214.8439,276.1113 215.4039,302.7513 " fill="none" id="Ctrl-to-BookMapper" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="215.53,308.75,219.34,299.6679,215.4249,303.7511,211.3417,299.8361,215.53,308.75" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="39" x="215.41" y="254.5384">utilise</text></g><!--link Ctrl to Repo--><g id="link_Ctrl_Repo"><path d="M245.01,211.31 C282.72,237.91 340.1173,278.3912 377.9073,305.0512 " fill="none" id="Ctrl-to-Repo" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="382.81,308.51,377.7617,300.0533,378.7244,305.6277,373.15,306.5903,382.81,308.51" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="39" x="308.94" y="254.5384">utilise</text></g><!--link BookMapper to BookDto--><g id="link_BookMapper_BookDto"><path d="M189.07,355.78 C163.02,377.61 128.3787,406.6262 102.3887,428.4062 " fill="none" id="BookMapper-to-BookDto" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="97.79,432.26,107.2573,429.5451,101.6223,429.0485,102.1189,423.4135,97.79,432.26" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="26" x="153.18" y="399.0284">cr&#233;e</text></g><!--link BookMapper to BookSaveDto--><g id="link_BookMapper_BookSaveDto"><path d="M216.74,355.78 C217.46,377.61 218.3418,404.4833 219.0618,426.2633 " fill="none" id="BookMapper-to-BookSaveDto" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="219.26,432.26,222.9605,423.1328,219.0948,427.2627,214.9648,423.3971,219.26,432.26" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="13" x="219.24" y="399.0284">lit</text></g><!--link BookMapper to E--><g id="link_BookMapper_E"><path d="M250.8898,359.3803 C279.8998,381.1403 313.9494,406.6708 342.9994,428.4508 " fill="none" id="BookMapper-E" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="246.09,355.78,250.8895,364.3803,250.0898,358.7802,255.6899,357.9805,246.09,355.78" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="347.8,432.05,342.9986,423.4508,343.7995,429.0507,338.1996,429.8516,347.8,432.05" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="56" x="307.7" y="399.0284">convertit</text></g><!--link Repo to E--><g id="link_Repo_E"><path d="M406.3816,361.5196 C399.7316,383.3496 393.2173,404.7401 386.5873,426.5201 " fill="none" id="Repo-E" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="408.13,355.78,401.681,363.2238,406.673,360.563,409.3337,365.555,408.13,355.78" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="384.84,432.26,391.2876,424.8149,386.2961,427.4767,383.6343,422.4852,384.84,432.26" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="50" x="399.72" y="399.0284">persiste</text></g><!--link Repo to DB--><g id="link_Repo_DB"><path d="M439.1422,360.3391 C446.8822,369.3391 451.69,375.38 459,385.46 C469.89,400.46 477.8372,413.0747 485.9872,426.8647 " fill="none" id="Repo-DB" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="435.23,355.79,438.0656,365.2218,438.4902,359.5809,444.1311,360.0055,435.23,355.79" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="489.04,432.03,487.9044,422.2468,486.496,427.7256,481.0173,426.3172,489.04,432.03" style="stroke:#181818;stroke-width:1.0;"/></g><!--SRC=[RK_DIWCn4BxdAORUYo1u4IcukprK_CCzIW_ZEfImCHCcquKYFf3FuOkPnAwcu9pc-vkVE5eVKF0DX0P5ltC4xmPI2U_zQylYIU3ymdmO4t0OSKUmk7xSm2qUI1R5-zmwIrwtW17QZ1lciMMlmiwH_F0gRfOwvUtSzpXHZUymX1GvMTUJJ7QWimuLJ_RcG9c-dj4J1OvMMGw5pp1BEVc2aGhPDNbw2rVBvQhS1PTmqp_Scz9dyk-G9EtLEXlfgAxAp8esbNdEfeUIOv2lJ_fFFlwSBCvgRIWNhNEK_KIYIJLbtQ-GND56fOhkccy0]--></g></svg></div></section><section class="chapter"><h2 id="exercice-4-appliquer-le-pattern-dto-aux-auteurs" data-toc="exercice-4-appliquer-le-pattern-dto-aux-auteurs">Exercice 4 : Appliquer le Pattern DTO aux Auteurs</h2><p id="vr0o3u_99">Votre mission : refactoriser la gestion des auteurs pour utiliser des DTOs.</p><p id="vr0o3u_100"><span class="control" id="vr0o3u_102">&Eacute;nonc&eacute; :</span></p><ol class="list _decimal" id="vr0o3u_101" type="1"><li class="list__item" id="vr0o3u_103"><p id="vr0o3u_107">Cr&eacute;ez les DTOs <code class="code" id="vr0o3u_108">AuthorDto</code> (pour la sortie, avec <code class="code" id="vr0o3u_109">id</code>, <code class="code" id="vr0o3u_110">firstName</code>, <code class="code" id="vr0o3u_111">lastName</code>) et <code class="code" id="vr0o3u_112">AuthorSaveDto</code> (pour l'entr&eacute;e, avec <code class="code" id="vr0o3u_113">firstName</code> et <code class="code" id="vr0o3u_114">lastName</code>) dans le package <code class="code" id="vr0o3u_115">api.dto</code>.</p></li><li class="list__item" id="vr0o3u_104"><p id="vr0o3u_116">Cr&eacute;ez un <code class="code" id="vr0o3u_117">AuthorMapper</code> manuel dans le package <code class="code" id="vr0o3u_118">api.mapper</code> pour g&eacute;rer la conversion entre <code class="code" id="vr0o3u_119">Author</code> et ses DTOs.</p></li><li class="list__item" id="vr0o3u_105"><p id="vr0o3u_120">Refactorisez enti&egrave;rement le <code class="code" id="vr0o3u_122">AuthorController</code> pour :</p><ul class="list _bullet" id="vr0o3u_121"><li class="list__item" id="vr0o3u_123"><p id="vr0o3u_125">Retourner des <code class="code" id="vr0o3u_126">List&lt;AuthorDto&gt;</code> ou <code class="code" id="vr0o3u_127">ResponseEntity&lt;AuthorDto&gt;</code>.</p></li><li class="list__item" id="vr0o3u_124"><p id="vr0o3u_128">Accepter un <code class="code" id="vr0o3u_129">AuthorSaveDto</code> pour la cr&eacute;ation (<code class="code" id="vr0o3u_130">POST</code>) et la mise &agrave; jour (<code class="code" id="vr0o3u_131">PUT</code>).</p></li></ul></li><li class="list__item" id="vr0o3u_106"><p id="vr0o3u_132">Testez vos endpoints <code class="code" id="vr0o3u_133">GET /api/authors</code> et <code class="code" id="vr0o3u_134">POST /api/authors</code> pour v&eacute;rifier que le nouveau contrat d'API fonctionne.</p></li></ol></section><section class="chapter"><div class="collapse"><div class="collapse__title"><h2 id="correction-exercice-4" data-toc="correction-exercice-4">Correction exercice 4</h2></div><div class="collapse__content"><p id="vr0o3u_135"><span class="control" id="vr0o3u_144">1. Les DTOs pour <code class="code" id="vr0o3u_145">Author</code></span></p><p id="vr0o3u_136"><code class="code" id="vr0o3u_146">AuthorDto.java</code></p><div class="code-block" data-lang="java">
+// package fr.formation.spring.bibliotech.api.dto;
+
+import lombok.Data;
+
+@Data
+public class AuthorDto {
+    private Long id;
+    private String firstName;
+    private String lastName;
+}
+</div><p id="vr0o3u_138"><code class="code" id="vr0o3u_147">AuthorSaveDto.java</code></p><div class="code-block" data-lang="java">
+// package fr.formation.spring.bibliotech.api.dto;
+
+import lombok.Data;
+
+@Data
+public class AuthorSaveDto {
+    private String firstName;
+    private String lastName;
+}
+</div><p id="vr0o3u_140"><span class="control" id="vr0o3u_148">2. Le Mapper <code class="code" id="vr0o3u_149">AuthorMapper.java</code></span></p><div class="code-block" data-lang="java">
+// package fr.formation.spring.bibliotech.api.mapper;
+
+import fr.formation.spring.bibliotech.api.dto.AuthorDto;
+import fr.formation.spring.bibliotech.api.dto.AuthorSaveDto;
+import fr.formation.spring.bibliotech.dal.entities.Author;
+import org.springframework.stereotype.Component;
+
+@Component
+public class AuthorMapper {
+
+    public AuthorDto toDto(Author entity) {
+        if (entity == null) return null;
+        AuthorDto dto = new AuthorDto();
+        dto.setId(entity.getId());
+        dto.setFirstName(entity.getFirstName());
+        dto.setLastName(entity.getLastName());
+        return dto;
+    }
+
+    public Author toEntity(AuthorSaveDto dto) {
+        if (dto == null) return null;
+        Author entity = new Author();
+        entity.setFirstName(dto.getFirstName());
+        entity.setLastName(dto.getLastName());
+        return entity;
+    }
+
+    // Méthode pour la mise à jour, qui modifie une entité existante
+    public void updateEntity(AuthorSaveDto dto, Author entity) {
+        if (dto == null || entity == null) return;
+        entity.setFirstName(dto.getFirstName());
+        entity.setLastName(dto.getLastName());
+    }
+}
+</div><p id="vr0o3u_142"><span class="control" id="vr0o3u_150">3. Le <code class="code" id="vr0o3u_151">AuthorController</code> refactoris&eacute;</span></p><div class="code-block" data-lang="java">
+// package fr.formation.spring.bibliotech.api;
+
+import fr.formation.spring.bibliotech.api.dto.AuthorDto;
+import fr.formation.spring.bibliotech.api.dto.AuthorSaveDto;
+import fr.formation.spring.bibliotech.api.mapper.AuthorMapper;
+import fr.formation.spring.bibliotech.dal.entities.Author;
+import fr.formation.spring.bibliotech.dal.repositories.AuthorRepository;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@RestController
+@RequestMapping(&quot;/api/authors&quot;)
+public class AuthorController {
+
+    private final AuthorRepository authorRepository;
+    private final AuthorMapper authorMapper;
+
+    public AuthorController(AuthorRepository authorRepository, AuthorMapper authorMapper) {
+        this.authorRepository = authorRepository;
+        this.authorMapper = authorMapper;
+    }
+
+    @GetMapping
+    public List&lt;AuthorDto&gt; getAllAuthors() {
+        return this.authorRepository.findAll().stream()
+                .map(this.authorMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;AuthorDto&gt; getAuthorById(@PathVariable Long id) {
+        return this.authorRepository.findById(id)
+                .map(this.authorMapper::toDto)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    public ResponseEntity&lt;AuthorDto&gt; createAuthor(@RequestBody AuthorSaveDto authorDto) {
+        Author author = this.authorMapper.toEntity(authorDto);
+        Author savedAuthor = this.authorRepository.save(author);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest().path(&quot;/{id}&quot;)
+                .buildAndExpand(savedAuthor.getId()).toUri();
+        return ResponseEntity.created(location).body(this.authorMapper.toDto(savedAuthor));
+    }
+
+    @PutMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;AuthorDto&gt; updateAuthor(@PathVariable Long id,
+                                                  @RequestBody AuthorSaveDto authorDto) {
+        return this.authorRepository.findById(id)
+                .map(author -&gt; {
+                    this.authorMapper.updateEntity(authorDto, author);
+                    Author updatedAuthor = this.authorRepository.save(author);
+                    return ResponseEntity.ok(this.authorMapper.toDto(updatedAuthor));
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;Void&gt; deleteAuthor(@PathVariable Long id) {
+        if (authorRepository.existsById(id)) {
+            authorRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+}
+</div></div></div></section><section class="chapter"><h2 id="auto-valuation" data-toc="auto-valuation">Auto-&eacute;valuation</h2><ol class="list _decimal" id="vr0o3u_152" type="1"><li class="list__item" id="vr0o3u_153"><p id="vr0o3u_158"><span class="control" id="vr0o3u_159">(QCM)</span> Quel est le principal avantage de l'utilisation des DTOs dans une API REST ? a) Am&eacute;liorer les performances de la base de donn&eacute;es. b) Rendre le code du contr&ocirc;leur plus court. c) D&eacute;coupler le contrat d'API de la structure de la base de donn&eacute;es. d) Simplifier les requ&ecirc;tes SQL.</p></li><li class="list__item" id="vr0o3u_154"><p id="vr0o3u_160"><span class="control" id="vr0o3u_161">_ (Question ouverte)_</span> Pourquoi est-il judicieux d'avoir un DTO diff&eacute;rent pour la cr&eacute;ation (<code class="code" id="vr0o3u_162">POST</code>) et la lecture (<code class="code" id="vr0o3u_163">GET</code>) d'une m&ecirc;me ressource ?</p></li><li class="list__item" id="vr0o3u_155"><p id="vr0o3u_164"><span class="control" id="vr0o3u_165">(QCM)</span> Dans quel composant a lieu la conversion entre une entit&eacute; et un DTO ? a) Le Contr&ocirc;leur b) Le Repository c) Le Mapper d) L'Entit&eacute; elle-m&ecirc;me</p></li><li class="list__item" id="vr0o3u_156"><p id="vr0o3u_166"><span class="control" id="vr0o3u_167">_ (Question ouverte)_</span> Citez deux probl&egrave;mes que l'utilisation des DTOs permet de r&eacute;soudre par rapport &agrave; l' exposition directe des entit&eacute;s JPA.</p></li><li class="list__item" id="vr0o3u_157"><p id="vr0o3u_168"><span class="control" id="vr0o3u_169">_ (Question ouverte)_</span> Dans notre <code class="code" id="vr0o3u_170">BookMapper</code>, la m&eacute;thode <code class="code" id="vr0o3u_171">toEntity</code> prend un <code class="code" id="vr0o3u_172">BookSaveDto</code> et a besoin du <code class="code" id="vr0o3u_173">AuthorRepository</code>. Expliquez pourquoi ce repository est n&eacute;cessaire.</p></li></ol></section><section class="chapter"><h2 id="conclusion" data-toc="conclusion">Conclusion</h2><p id="vr0o3u_174">F&eacute;licitations ! Vous venez de faire passer votre API &agrave; un niveau sup&eacute;rieur de professionnalisme. En introduisant la couche DTO, vous avez cr&eacute;&eacute; un &quot;contrat&quot; clair et robuste avec les clients de votre API. Votre application est maintenant plus s&ucirc;re, plus flexible et plus facile &agrave; maintenir. Le d&eacute;couplage entre l'API et la base de donn&eacute;es est une des pierres angulaires d'une architecture logicielle saine.</p><p id="vr0o3u_175">Cependant, notre travail n'est pas termin&eacute;. Pour l'instant, nous faisons aveugl&eacute;ment confiance aux donn&eacute;es envoy&eacute;es par le client. Que se passe-t-il si un client essaie de cr&eacute;er un livre sans titre ? Ou avec un ISBN invalide ? Dans la partie suivante, nous allons apprendre &agrave; valider les donn&eacute;es entrantes pour garantir l'int&eacute;grit&eacute; de notre syst&egrave;me. Nous verrons &eacute;galement comment automatiser la fastidieuse t&acirc;che de mapping.</p></section><div class="last-modified">14 juin 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="001-01-rest-crud.html" class="navigation-links__prev">Chapitre 2 : Interagir avec les Ressources - Pour aller plus loin</a><a href="002-01-validation-and-mapping.html" class="navigation-links__next">Chapitre 3 : Validation et Mapping Automatis&eacute; - Pour aller plus loin</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b776/app.js"></script></body></html>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE instance-profile
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/product-profile.dtd">
+
+<instance-profile id="hi"
+                 name="Help Instance"
+                 start-page="001-00-rest-intro.md">
+
+    <toc-element topic="00-00-Chapitre-1-Intro-et-projet.md"/>
+    <toc-element topic="001-00-rest-intro.md">
+        <toc-element topic="001-01-rest-crud.md"/>
+    </toc-element>
+    <toc-element topic="002-00-managing-data.md">
+        <toc-element topic="002-01-validation-and-mapping.md"/>
+    </toc-element>
+    <toc-element topic="003-00-error-management.md"/>
+    <toc-element topic="004-00-documentation.md">
+        <toc-element topic="004-01-advanced-open-api.md"/>
+    </toc-element>
+    <toc-element topic="004-00-advanced-rest-patterns.md">
+        <toc-element topic="005-01-paging-and-sorting.md"/>
+        <toc-element topic="005-01-HATEOAS.md"/>
+        <toc-element topic="005-03-api-versionning.md"/>
+        <toc-element topic="005-04-secure-api.md"/>
+    </toc-element>
+    <toc-element topic="006-00-best-practices.md"/>
+    <toc-element topic="006-00-typical-app-examples.md"/>
+    <toc-element topic="007-00-general-conclusion.md"/>
+</instance-profile>
