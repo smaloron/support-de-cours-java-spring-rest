@@ -1,4 +1,4 @@
-# Chapitre 6 : Patterns Avancés - Gérer de Grands Ensembles de Données (L'Essentiel)
+# Chapitre 5 : Patterns Avancés - Gérer de Grands Ensembles de Données (L'Essentiel)
 
 Jusqu'à présent, notre API "BiblioTech" fonctionne à merveille avec notre petit jeu de données de test. Mais imaginez
 une vraie bibliothèque avec des dizaines de milliers de livres. Si un client appelle `GET /api/books`, doit-on vraiment

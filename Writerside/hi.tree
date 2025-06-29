@@ -14,14 +14,15 @@
         <toc-element topic="002-01-validation-and-mapping.md"/>
     </toc-element>
     <toc-element topic="003-00-error-management.md"/>
-    <toc-element topic="004-00-documentation.md">
-        <toc-element topic="004-01-advanced-open-api.md"/>
-    </toc-element>
     <toc-element topic="004-00-advanced-rest-patterns.md">
         <toc-element topic="005-01-paging-and-sorting.md"/>
         <toc-element topic="005-01-HATEOAS.md"/>
         <toc-element topic="005-03-api-versionning.md"/>
         <toc-element topic="005-04-secure-api.md"/>
+        <toc-element topic="005-05-JWT-security.md"/>
+    </toc-element>
+    <toc-element topic="004-00-documentation.md">
+        <toc-element topic="004-01-advanced-open-api.md"/>
     </toc-element>
     <toc-element topic="006-00-best-practices.md"/>
     <toc-element topic="006-00-typical-app-examples.md"/>

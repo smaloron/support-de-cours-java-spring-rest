@@ -1,4 +1,4 @@
-# Chapitre 6 : L'API Auto-découvrable avec HATEOAS - Pour aller plus loin
+# Chapitre 5 : L'API Auto-découvrable avec HATEOAS - Pour aller plus loin
 
 Nous avons construit une API puissante et bien structurée. Un client qui a lu notre documentation Swagger sait
 exactement comment naviguer : pour voir les auteurs d'un livre, il sait qu'il doit construire l'URL

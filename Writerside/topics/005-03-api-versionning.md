@@ -1,4 +1,4 @@
-# Chapitre 6 : Le Versioning d'API - Gérer le Temps et l'Évolution
+# Chapitre 5 : Le Versioning d'API - Gérer le Temps et l'Évolution
 
 Notre API est maintenant performante et élégante. Mais une API, comme tout logiciel, est destinée à vivre et à évoluer.
 Demain, une nouvelle réglementation pourrait nous imposer de changer le format d'une donnée, ou une nouvelle idée

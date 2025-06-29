@@ -13,7 +13,7 @@ y compris les détails des coulisses qu'il n'est pas censé voir. Il est temps d
 - Définir le rôle et l'intérêt d'un DTO (Data Transfer Object).
 - Créer des DTOs distincts pour les données en entrée (création/mise à jour) et en sortie (lecture).
 - Mettre en place une couche de "mapping" pour convertir les entités en DTOs, et vice-versa.
-- Refactoriser un contrôleur pour utiliser les DTOs, créant ainsi un contrat d'API clair et stable.
+- Réusiner (refactoring) un contrôleur pour utiliser les DTOs, créant ainsi un contrat d'API clair et stable.
 
 ### Introduction : Le Costume de Scène de Vos Données
 
@@ -60,6 +60,7 @@ Nous allons créer deux types de DTOs pour nos livres :
 
 <tabs>
 <tab title="BookDto.java (Sortie)">
+
 ```java
 // package fr.formation.spring.bibliotech.api.dto;
 
@@ -82,6 +83,7 @@ private Set<String> authorNames;
 ```
 </tab>
 <tab title="BookSaveDto.java (Entrée)">
+
 ```java
 // package fr.formation.spring.bibliotech.api.dto;
 
@@ -194,7 +196,7 @@ public class BookMapper {
 
 </procedure>
 
-### Refactorisation du Contrôleur
+### Refactoring du Contrôleur
 
 Armés de nos DTOs et de notre mapper, nous pouvons enfin nettoyer notre `BookController`.
 
@@ -289,7 +291,7 @@ Repo <--> DB
 
 ### Exercice 4 : Appliquer le Pattern DTO aux Auteurs
 
-Votre mission : refactoriser la gestion des auteurs pour utiliser des DTOs.
+Votre mission : réusiner (refactoring) la gestion des auteurs pour utiliser des DTOs.
 
 **Énoncé :**
 

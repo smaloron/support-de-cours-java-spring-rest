@@ -1,4 +1,4 @@
-# Chapitre 6 : La Sécurisation par Clé d'API - Protéger vos Endpoints
+# Chapitre 5 : La Sécurisation par Clé d'API - Protéger vos Endpoints
 
 Notre API est désormais performante, évolutive et bien structurée. Cependant, nous avons laissé la porte d'entrée grande
 ouverte. N'importe qui peut créer, modifier ou supprimer des livres et des auteurs. Il est temps d'installer une

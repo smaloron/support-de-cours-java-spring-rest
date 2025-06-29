@@ -1,4 +1,4 @@
-# Chapitre 6 : Patterns REST Avancés - L'Essentiel
+# Chapitre 5 : Patterns REST Avancés - L'Essentiel
 
 Le modèle CRUD (Créer, Lire, Mettre à Jour, Supprimer) est le pain quotidien du développeur d'API REST. Il couvre 80%
 des besoins. Mais que faire pour les 20% restants ? Comment gérer une recherche complexe avec de multiples filtres ?

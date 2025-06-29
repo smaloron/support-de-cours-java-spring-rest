@@ -1,4 +1,4 @@
-# Chapitre 5 : Documentation des API avec OpenAPI - L'Essentiel
+# Chapitre 6 : Documentation des API avec OpenAPI - L'Essentiel
 
 Vous avez bâti une API REST magnifique. Elle est bien structurée, elle gère les erreurs avec élégance, elle est
 sécurisée... Mais comment les autres développeurs (ceux qui vont l'utiliser dans une application front-end ou un autre
@@ -108,9 +108,15 @@ public class BookController {
     @Operation(summary = "Récupère un livre par son ID",
             description = "Retourne un seul livre basé sur son identifiant unique.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Livre trouvé",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = BookDto.class))}),
+            @ApiResponse(
+                responseCode = "200", description = "Livre trouvé",
+                content = {
+                    @Content(
+                       mediaType = "application/json", 
+                       schema = @Schema(implementation = BookDto.class)
+                    )
+                }
+            ),
             @ApiResponse(responseCode = "404", description = "Livre non trouvé",
                     content = @Content) // Pas de corps de réponse pour 404
     })

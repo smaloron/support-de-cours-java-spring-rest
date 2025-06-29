@@ -135,26 +135,7 @@ bases solides, soyez curieux, continuez d'apprendre, et construisez de grandes c
    échoue. C'est utile pour transformer le message d'erreur par défaut de Spring en un format JSON personnalisé et plus
    lisible pour le client.
 
-### Chapitre 5 (L'Essentiel)
-
-1. (c) `springdoc-openapi-starter-webmvc-ui`.
-2. `http://localhost:8080/swagger-ui.html`.
-3. (d) `@Operation`.
-4. Elle permet de fournir une description et des exemples pour un champ spécifique d'un DTO, ce qui clarifie sa
-   signification pour les utilisateurs de l'API dans la documentation Swagger.
-5. Les annotations de contrôleur (`@RestController`, `@RequestMapping`), les annotations de méthode (`@GetMapping`,
-   `@PostMapping`, etc.), les paramètres de méthode (`@PathVariable`, `@RequestBody`) et les types de retour.
-
-### Chapitre 5 (Pour aller plus loin)
-
-1. (b) En créant un `Bean` de type `OpenAPI` dans une classe de configuration.
-2. L'objet `Pageable` de `org.springframework.data.domain`.
-3. (b) Définir un `SecurityScheme` dans la configuration `OpenAPI` et utiliser `@SecurityRequirement` sur la méthode.
-4. L'annotation `@Parameter` sert à documenter un paramètre d'une méthode de contrôleur (paramètre de chemin, de
-   requête...). Par exemple : `@Parameter(description = "ID de l'utilisateur", example = "123")`.
-5. Le bouton "Authorize".
-
-### Chapitre 6
+### Chapitre 5
 
 1. (c) Utiliser les Spécifications Spring Data JPA.
 2. Par exemple, `GET /api/libraries/{libraryId}/books` pour lister tous les livres disponibles dans une bibliothèque
@@ -168,7 +149,7 @@ bases solides, soyez curieux, continuez d'apprendre, et construisez de grandes c
    lequel on peut ensuite chaîner des critères avec `.and()` de manière conditionnelle.
    {/collapsible}
 
-### Chapitre 6 Pagination et Tri
+### Chapitre 5 Pagination et Tri
 
 1. **(c) `Pageable`.** C'est l'interface de `org.springframework.data.domain` qui encapsule les informations de
    pagination et de tri.
@@ -178,15 +159,7 @@ bases solides, soyez curieux, continuez d'apprendre, et construisez de grandes c
 4. `?page=2&size=10` (les pages sont indexées à partir de 0).
 5. On peut passer plusieurs paramètres `sort` : `?sort=firstName,asc&sort=lastName,desc`.
 
-Absolument ! Il semble qu'il y ait eu une petite réorganisation des chapitres au fil de nos échanges. Je vais vous
-fournir la correction pour la section qui était spécifiquement dédiée à **HATEOAS**, qui était initialement une partie
-avancée du chapitre 6.
-
-Voici la correction pour l'auto-évaluation sur **HATEOAS**.
-
----
-
-### Chapitre 6 HATEOAS
+### Chapitre 5 HATEOAS
 
 1. **(b) Hypermedia As The Engine Of Application State.** C'est la définition complète de l'acronyme. L'idée centrale
    est que l'état de l'application cliente est "piloté" par les liens (hypermédia) que le serveur lui envoie.
@@ -201,27 +174,27 @@ Voici la correction pour l'auto-évaluation sur **HATEOAS**.
    classe nommée `ResourceSupport`).
 
 4. La construction `linkTo(methodOn(...))` est un moyen **type-safe** et **refactor-safe** de créer des liens.
-    - **Type-safe** : Le compilateur vérifie que la méthode que vous appelez existe bien sur le contrôleur.
-    - **Refactor-safe** : Si vous renommez l'URI de l'endpoint dans son annotation `@RequestMapping`, ou si vous
-      renommez la méthode Java elle-même, le lien généré se mettra à jour automatiquement. Cela évite les liens cassés
-      qui se produiraient si vous construisiez l'URL manuellement avec des chaînes de caractères.
+   - **Type-safe** : Le compilateur vérifie que la méthode que vous appelez existe bien sur le contrôleur.
+   - **Refactor-safe** : Si vous renommez l'URI de l'endpoint dans son annotation `@RequestMapping`, ou si vous
+     renommez la méthode Java elle-même, le lien généré se mettra à jour automatiquement. Cela évite les liens cassés
+     qui se produiraient si vous construisiez l'URL manuellement avec des chaînes de caractères.
 
 5. La relation "self" est une convention standard qui fournit l'**URI canonique** de la ressource elle-même. C'est en
    quelque sorte le lien "vous êtes ici" ou l'adresse unique et permanente de la ressource qui est représentée dans la
    réponse.
 
-### Chapitre 6 Le Versioning d'API
+### Chapitre 5 Le Versioning d'API
 
 1. **(b) Pour gérer les "breaking changes" sans impacter les clients existants.** C'est l'objectif fondamental du
    versioning : permettre à l'API d'évoluer tout en garantissant la stabilité pour les applications qui en dépendent.
 
 2. Un "breaking change" (ou changement cassant) est une modification apportée à l'API qui rompt le contrat avec les
    clients existants, les obligeant à modifier leur code pour continuer à fonctionner.
-    - **Exemple concret** : Dans notre `BookDto`, si nous décidions que le champ `isbn` (une `String`) devait devenir un
-      objet complexe pour mieux représenter ses différentes parties, comme
-      `{"type": "ISBN-13", "value": "978-0439708180"}`, ce serait un "breaking change". Les clients qui s'attendaient à
-      recevoir une simple chaîne de caractères pour le champ `isbn` planteraient en essayant de désérialiser la nouvelle
-      structure.
+   - **Exemple concret** : Dans notre `BookDto`, si nous décidions que le champ `isbn` (une `String`) devait devenir un
+     objet complexe pour mieux représenter ses différentes parties, comme
+     `{"type": "ISBN-13", "value": "978-0439708180"}`, ce serait un "breaking change". Les clients qui s'attendaient à
+     recevoir une simple chaîne de caractères pour le champ `isbn` planteraient en essayant de désérialiser la nouvelle
+     structure.
 
 3. **(b) Ajouter un nouveau champ optionnel `editor` à `BookDto`.** C'est un changement non-cassant, car les
    clients existants ignoreront simplement ce nouveau champ qu'ils ne connaissent pas. Le reste de la structure de la
@@ -234,8 +207,31 @@ Voici la correction pour l'auto-évaluation sur **HATEOAS**.
    sont servies simultanément par l'application.
 
 5. **Stratégie de versioning par URI** :
-    - **Avantage :** C'est la stratégie la plus **claire et la plus explicite**. L'URL est facile à lire, à partager, à
-      tester dans un navigateur et à mettre en cache par les serveurs intermédiaires.
-    - **Inconvénient :** Certains puristes de REST argumentent que l'URI identifie une ressource, et que la ressource
-      elle-même ne change pas de version. L'URI devrait donc rester stable (`/api/books`) et la version devrait être
-      communiquée par un autre moyen (comme un en-tête `Accept`).
+   - **Avantage :** C'est la stratégie la plus **claire et la plus explicite**. L'URL est facile à lire, à partager, à
+     tester dans un navigateur et à mettre en cache par les serveurs intermédiaires.
+   - **Inconvénient :** Certains puristes de REST argumentent que l'URI identifie une ressource, et que la ressource
+     elle-même ne change pas de version. L'URI devrait donc rester stable (`/api/books`) et la version devrait être
+     communiquée par un autre moyen (comme un en-tête `Accept`).
+
+
+
+### Chapitre 6 Documentation des API
+
+1. (c) `springdoc-openapi-starter-webmvc-ui`.
+2. `http://localhost:8080/swagger-ui.html`.
+3. (d) `@Operation`.
+4. Elle permet de fournir une description et des exemples pour un champ spécifique d'un DTO, ce qui clarifie sa
+   signification pour les utilisateurs de l'API dans la documentation Swagger.
+5. Les annotations de contrôleur (`@RestController`, `@RequestMapping`), les annotations de méthode (`@GetMapping`,
+   `@PostMapping`, etc.), les paramètres de méthode (`@PathVariable`, `@RequestBody`) et les types de retour.
+
+### Chapitre 6 OpenAPI avancé (Pour aller plus loin)
+
+1. (b) En créant un `Bean` de type `OpenAPI` dans une classe de configuration.
+2. L'objet `Pageable` de `org.springframework.data.domain`.
+3. (b) Définir un `SecurityScheme` dans la configuration `OpenAPI` et utiliser `@SecurityRequirement` sur la méthode.
+4. L'annotation `@Parameter` sert à documenter un paramètre d'une méthode de contrôleur (paramètre de chemin, de
+   requête...). Par exemple : `@Parameter(description = "ID de l'utilisateur", example = "123")`.
+5. Le bouton "Authorize".
+
+

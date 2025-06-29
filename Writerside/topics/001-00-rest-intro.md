@@ -75,7 +75,8 @@ une signification précise.
 <p>Deux concepts importants :</p>
 <ul>
 <li>Une opération est <b>sûre (safe)</b> si elle ne modifie pas l'état du serveur. <b>GET</b> est une méthode sûre.</li>
-<li>Une opération est <b>idempotente</b> si la répéter plusieurs fois a le même effet que de l'appeler une seule fois. <b>GET</b>, <b>PUT</b> et <b>DELETE</b> sont idempotentes. <b>POST</b> ne l'est pas (chaque appel crée une nouvelle ressource).</li>
+<li>Une opération est <b>idempotente</b> si la répéter plusieurs fois produit le même effet que de l'appeler une seule 
+fois. <b>GET</b>, <b>PUT</b> et <b>DELETE</b> sont idempotentes. <b>POST</b> ne l'est pas (chaque appel crée une nouvelle ressource).</li>
 </ul>
 </tip>
 
@@ -208,6 +209,7 @@ au format JSON :
   }
 ]
 ```
+
 </procedure>
 <warning class="alert alert-warning" title="Boucles infinies en JSON">
 <p>Avez-vous remarqué que dans la réponse, la propriété <code>books</code> de l'auteur est vide ? Si elle n'était pas vide, Jackson essaierait de sérialiser les livres de l'auteur, qui eux-mêmes contiennent l'auteur, qui contient ses livres, etc. C'est une <b>boucle infinie</b> ! Nous apprendrons à gérer cela proprement avec les DTO (Data Transfer Objects) dans un prochain chapitre.</p>
