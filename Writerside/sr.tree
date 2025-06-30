@@ -2,8 +2,8 @@
 <!DOCTYPE instance-profile
         SYSTEM "https://resources.jetbrains.com/writerside/1.0/product-profile.dtd">
 
-<instance-profile id="hi"
-                 name="Help Instance"
+<instance-profile id="sr"
+                 name="Spring REST"
                  start-page="001-00-rest-intro.md">
 
     <toc-element topic="00-00-Chapitre-1-Intro-et-projet.md"/>
