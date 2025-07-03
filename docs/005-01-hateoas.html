@@ -1,0 +1,149 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#307FFF"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-07-03T08:02:14.513658"><title>Chapitre 5 : L'API Auto-d&eacute;couvrable avec HATEOAS - Pour aller plus loin | Spring REST</title><script type="application/json" id="virtual-toc-data">[{"id":"objectifs-p-dagogiques","level":0,"title":"Objectifs Pédagogiques","anchor":"#objectifs-p-dagogiques"},{"id":"introduction-la-carte-au-tr-sor-intelligente","level":0,"title":"Introduction : La Carte au Trésor Intelligente","anchor":"#introduction-la-carte-au-tr-sor-intelligente"},{"id":"1-int-gration-de-spring-hateoas","level":0,"title":"1. Intégration de Spring HATEOAS","anchor":"#1-int-gration-de-spring-hateoas"},{"id":"2-rendre-nos-dtos-conscients-des-liens","level":0,"title":"2. Rendre nos DTOs \"conscients des liens\"","anchor":"#2-rendre-nos-dtos-conscients-des-liens"},{"id":"3-ajouter-des-liens-dans-le-contr-leur","level":0,"title":"3. Ajouter des Liens dans le Contrôleur","anchor":"#3-ajouter-des-liens-dans-le-contr-leur"},{"id":"exercice-10-rendre-les-auteurs-d-couvrables","level":0,"title":"Exercice 10 : Rendre les Auteurs \"découvrables\"","anchor":"#exercice-10-rendre-les-auteurs-d-couvrables"},{"id":"correction-exercice-10","level":0,"title":"Correction exercice 10","anchor":"#correction-exercice-10"},{"id":"auto-valuation","level":0,"title":"Auto-évaluation","anchor":"#auto-valuation"},{"id":"conclusion","level":0,"title":"Conclusion","anchor":"#conclusion"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b776/app.css" rel="stylesheet"><meta name="msapplication-TileColor" content="#000000"><link rel="apple-touch-icon" sizes="180x180" href="https://jetbrains.com/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://jetbrains.com/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="https://jetbrains.com/favicon-16x16.png"><meta name="msapplication-TileImage" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-144x144.png"><meta name="msapplication-square70x70logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-70x70.png"><meta name="msapplication-square150x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-150x150.png"><meta name="msapplication-wide310x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x150.png"><meta name="msapplication-square310x310logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x310.png"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Chapitre 5 : L'API Auto-d&eacute;couvrable avec HATEOAS - Pour aller plus loin | Spring REST"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="Spring REST Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation/005-01-hateoas.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Chapitre 5 : L'API Auto-d&eacute;couvrable avec HATEOAS - Pour aller plus loin | Spring REST"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation/005-01-hateoas.html#webpage",
+    "url": "writerside-documentation/005-01-hateoas.html",
+    "name": "Chapitre 5 : L'API Auto-d&eacute;couvrable avec HATEOAS - Pour aller plus loin | Spring REST",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "Spring REST Help"
+}</script><!-- End Schema.org --></head><body data-id="005-01-HATEOAS" data-main-title="Chapitre 5 : L'API Auto-découvrable avec HATEOAS - Pour aller plus loin" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="004-00-advanced-rest-patterns.md|Chapitre 5 : Patterns REST Avancés - L'Essentiel"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>Spring REST  Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="005-01-HATEOAS" id="005-01-HATEOAS.md">Chapitre 5 : L'API Auto-découvrable avec HATEOAS - Pour aller plus loin</h1><p id="-bpj41i_3">Nous avons construit une API puissante et bien structur&eacute;e. Un client qui a lu notre documentation Swagger sait exactement comment naviguer : pour voir les auteurs d'un livre, il sait qu'il doit construire l'URL <code class="code" id="-bpj41i_13">/api/books/{id}/authors</code>. Mais que se passerait-il si nous pouvions rendre notre API si intelligente qu'elle dirait elle-m&ecirc;me au client quelles sont les prochaines &eacute;tapes possibles ? C'est la promesse de HATEOAS.</p><section class="chapter"><h2 id="objectifs-p-dagogiques" data-toc="objectifs-p-dagogiques">Objectifs P&eacute;dagogiques</h2><p id="-bpj41i_14">&Agrave; la fin de cette partie, vous serez capable de :</p><ul class="list _bullet" id="-bpj41i_15"><li class="list__item" id="-bpj41i_16"><p id="-bpj41i_21">D&eacute;finir le principe HATEOAS (Hypermedia as the Engine of Application State).</p></li><li class="list__item" id="-bpj41i_17"><p id="-bpj41i_22">Comprendre les avantages d'une API auto-d&eacute;couvrable en termes de couplage faible.</p></li><li class="list__item" id="-bpj41i_18"><p id="-bpj41i_23">Int&eacute;grer la biblioth&egrave;que <code class="code" id="-bpj41i_24">spring-hateoas</code> dans votre projet.</p></li><li class="list__item" id="-bpj41i_19"><p id="-bpj41i_25">Modifier vos DTOs et contr&ocirc;leurs pour inclure des liens hyperm&eacute;dia dans les r&eacute;ponses JSON.</p></li><li class="list__item" id="-bpj41i_20"><p id="-bpj41i_26">Cr&eacute;er des liens vers des ressources, des collections et des actions.</p></li></ul></section><section class="chapter"><h2 id="introduction-la-carte-au-tr-sor-intelligente" data-toc="introduction-la-carte-au-tr-sor-intelligente">Introduction : La Carte au Tr&eacute;sor Intelligente</h2><p id="-bpj41i_27">Imaginez que votre API est une carte au tr&eacute;sor. Jusqu'&agrave; pr&eacute;sent, vous avez fourni une carte compl&egrave;te (votre documentation Swagger) au d&eacute;but de l'aventure. L'explorateur (le client de l'API) doit constamment la consulter pour savoir o&ugrave; aller. S'il est sur l'&icirc;le &quot;Livre 1&quot;, il doit regarder la carte pour savoir que le &quot;Village des Auteurs&quot; se trouve aux coordonn&eacute;es X, Y.</p><p id="-bpj41i_28"><span class="control" id="-bpj41i_31">HATEOAS</span> (Hypermedia as the Engine of Application State) change la donne. C'est une carte au tr&eacute;sor qui parle. Quand l'explorateur arrive sur l'&icirc;le &quot;Livre 1&quot;, il trouve une pancarte qui dit :</p><ul class="list _bullet" id="-bpj41i_29"><li class="list__item" id="-bpj41i_32"><p id="-bpj41i_35">&quot;Vous &ecirc;tes sur l'&icirc;le Livre 1 (lien vers soi-m&ecirc;me)&quot;.</p></li><li class="list__item" id="-bpj41i_33"><p id="-bpj41i_36">&quot;Pour voir les auteurs de ce livre, suivez ce chemin : <code class="code" id="-bpj41i_37">/api/books/1/authors</code> &quot;.</p></li><li class="list__item" id="-bpj41i_34"><p id="-bpj41i_38">&quot;Pour archiver ce livre, utilisez ce levier : <code class="code" id="-bpj41i_39">POST /api/books/1/archive</code> &quot;.</p></li></ul><p id="-bpj41i_30">Le client n'a plus besoin de conna&icirc;tre &agrave; l'avance la structure des URIs. Il lui suffit de conna&icirc;tre le point d'entr&eacute;e et de suivre les liens fournis par l'API. L'API pilote l'&eacute;tat de l'application cliente &agrave; travers des hyperm&eacute;dias (des liens).</p></section><section class="chapter"><h2 id="1-int-gration-de-spring-hateoas" data-toc="1-int-gration-de-spring-hateoas">1. Int&eacute;gration de Spring HATEOAS</h2><p id="-bpj41i_40">Comme toujours avec Spring, l'int&eacute;gration est tr&egrave;s simple. Il suffit d'ajouter une d&eacute;pendance &agrave; notre <code class="code" id="-bpj41i_42">pom.xml</code>.</p><section class="procedure-steps"><h3 id="-bpj41i_41" data-toc="-bpj41i_41">Ajout de la dépendance Spring HATEOAS</h3><div class="code-block" data-lang="markup">
+&lt;!-- Dans la section &lt;dependencies&gt; de votre pom.xml --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-hateoas&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</div><p id="-bpj41i_44">Cette d&eacute;pendance va enrichir notre projet avec des outils pour construire des liens et formater les r&eacute;ponses JSON selon la norme HAL (Hypertext Application Language).</p><ol class="list _decimal"></ol></section></section><section class="chapter"><h2 id="2-rendre-nos-dtos-conscients-des-liens" data-toc="2-rendre-nos-dtos-conscients-des-liens">2. Rendre nos DTOs &quot;conscients des liens&quot;</h2><p id="-bpj41i_45">Pour qu'un DTO puisse transporter des liens, il doit h&eacute;riter de la classe <code class="code" id="-bpj41i_47">RepresentationModel</code>.</p><section class="procedure-steps"><h3 id="-bpj41i_46" data-toc="-bpj41i_46">Mise à jour de BookDto</h3><div class="code-block" data-lang="java">
+// package fr.formation.spring.bibliotech.api.dto;
+
+import org.springframework.hateoas.RepresentationModel;
+// ...
+
+// On fait hériter notre DTO de RepresentationModel&lt;BookDto&gt;
+public class BookDto extends RepresentationModel&lt;BookDto&gt; {
+    // ... les autres champs ne changent pas
+    private Long id;
+    private String title;
+    // ...
+}
+</div><p id="-bpj41i_49">Faites de m&ecirc;me pour <code class="code" id="-bpj41i_50">AuthorDto</code>. <code class="code" id="-bpj41i_51">BookSaveDto</code>, lui, n'a pas besoin de liens car il est utilis&eacute; en entr&eacute;e.</p><ol class="list _decimal"></ol></section></section><section class="chapter"><h2 id="3-ajouter-des-liens-dans-le-contr-leur" data-toc="3-ajouter-des-liens-dans-le-contr-leur">3. Ajouter des Liens dans le Contr&ocirc;leur</h2><p id="-bpj41i_52">Maintenant, nous devons construire et ajouter ces liens dans nos m&eacute;thodes de contr&ocirc;leur. Spring HATEOAS fournit une API fluide et &eacute;l&eacute;gante pour cela avec les m&eacute;thodes statiques <code class="code" id="-bpj41i_59">linkTo</code> et <code class="code" id="-bpj41i_60">methodOn</code>.</p><section class="procedure-steps"><h3 id="-bpj41i_53" data-toc="-bpj41i_53">Refactorisation de BookController avec HATEOAS</h3><p>Modifions `getBookById` et `getAllBooks` (version pagin&eacute;e). </p><div class="code-block" data-lang="java">
+// Dans BookController.java
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+
+// ...
+public class BookController {
+    // ...
+
+    @GetMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;BookDto&gt; getBookById(@PathVariable Long id) {
+        Book book = this.bookRepository.findById(id)
+                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Book&quot;, id));
+
+        BookDto bookDto = this.bookMapper.toDto(book);
+
+        // Ajout des liens HATEOAS
+        // 1. Lien vers la ressource elle-même (self link)
+        bookDto.add(linkTo(methodOn(BookController.class).getBookById(id)).withSelfRel());
+
+        // 2. Lien vers la collection de tous les livres
+        bookDto.add(linkTo(methodOn(BookController.class).searchBooks(null, null, null, null))
+                .withRel(&quot;books&quot;));
+
+        // 3. Lien vers les auteurs de ce livre (sous-ressource)
+        bookDto.add(linkTo(methodOn(BookController.class).getAuthorsOfBook(id))
+                .withRel(&quot;authors&quot;));
+
+        return ResponseEntity.ok(bookDto);
+    }
+}
+</div><ol class="list _decimal"></ol></section><p id="-bpj41i_54"><span class="control" id="-bpj41i_62">Comment &ccedil;a marche ?</span></p><ul class="list _bullet" id="-bpj41i_55"><li class="list__item" id="-bpj41i_63"><p id="-bpj41i_66"><code class="code" id="-bpj41i_67">linkTo(methodOn(Controller.class).methode(...))</code>: Cette construction magique g&eacute;n&egrave;re une URI pointant vers la m&eacute;thode sp&eacute;cifi&eacute;e. C'est refactor-safe : si vous renommez l'URI dans le <code class="code" id="-bpj41i_68">@GetMapping</code>, le lien se mettra &agrave; jour automatiquement !</p></li><li class="list__item" id="-bpj41i_64"><p id="-bpj41i_69"><code class="code" id="-bpj41i_70">.withSelfRel()</code>: D&eacute;finit la relation du lien comme &eacute;tant &quot;self&quot; (norme IANA).</p></li><li class="list__item" id="-bpj41i_65"><p id="-bpj41i_71"><code class="code" id="-bpj41i_72">.withRel(&quot;books&quot;)</code>: D&eacute;finit une relation personnalis&eacute;e. Le client saura que ce lien m&egrave;ne &agrave; la collection des livres.</p></li></ul><p id="-bpj41i_56">Maintenant, une requ&ecirc;te <code class="code" id="-bpj41i_73">GET /api/books/1</code> ne retournera plus seulement les donn&eacute;es, mais aussi les actions possibles :</p><div class="code-block" data-lang="json">
+{
+  &quot;id&quot;: 1,
+  &quot;title&quot;: &quot;Harry Potter and the Sorcerer's Stone&quot;,
+  &quot;isbn&quot;: &quot;978-0439708180&quot;,
+  &quot;publicationDate&quot;: &quot;1997-06-26&quot;,
+  &quot;authorNames&quot;: [
+    &quot;J.K. Rowling&quot;
+  ],
+  &quot;_links&quot;: {
+    &quot;self&quot;: {
+      &quot;href&quot;: &quot;http://localhost:8080/api/books/1&quot;
+    },
+    &quot;books&quot;: {
+      &quot;href&quot;: &quot;http://localhost:8080/api/books/search&quot;
+    },
+    &quot;authors&quot;: {
+      &quot;href&quot;: &quot;http://localhost:8080/api/books/1/authors&quot;
+    }
+  }
+}
+</div><aside class="prompt" data-type="warning" data-title="Le découplage ultime" id="-bpj41i_58"><p id="-bpj41i_74">Le client n'a plus besoin de conna&icirc;tre la structure <code class="code" id="-bpj41i_75">/api/books/{id}/authors</code>. Il re&ccedil;oit un objet <code class="code" id="-bpj41i_76">Book</code>, voit qu'il y a un lien avec la relation (<code class="code" id="-bpj41i_77">rel</code>) &quot;authors&quot;, et il n'a plus qu'&agrave; suivre l'URL fournie dans le <code class="code" id="-bpj41i_78">href</code>. Si demain vous d&eacute;cidez de changer l'URI en <code class="code" id="-bpj41i_79">/api/v1/livres/{id}/ecrivains</code>, le client continuera de fonctionner sans aucune modification, car il ne fait que suivre les liens qu'on lui donne !</p></aside></section><section class="chapter"><h2 id="exercice-10-rendre-les-auteurs-d-couvrables" data-toc="exercice-10-rendre-les-auteurs-d-couvrables">Exercice 10 : Rendre les Auteurs &quot;d&eacute;couvrables&quot;</h2><p id="-bpj41i_80">C'est &agrave; votre tour d'appliquer le principe HATEOAS &agrave; notre <code class="code" id="-bpj41i_83">AuthorController</code>.</p><p id="-bpj41i_81"><span class="control" id="-bpj41i_84">&Eacute;nonc&eacute; :</span></p><ol class="list _decimal" id="-bpj41i_82" type="1"><li class="list__item" id="-bpj41i_85"><p id="-bpj41i_88">Assurez-vous que votre <code class="code" id="-bpj41i_89">AuthorDto</code> h&eacute;rite de <code class="code" id="-bpj41i_90">RepresentationModel&lt;AuthorDto&gt;</code>.</p></li><li class="list__item" id="-bpj41i_86"><p id="-bpj41i_91">Modifiez la m&eacute;thode <code class="code" id="-bpj41i_93">getAuthorById</code> dans <code class="code" id="-bpj41i_94">AuthorController</code> pour qu'elle ajoute les liens suivants &agrave; la r&eacute;ponse <code class="code" id="-bpj41i_95">AuthorDto</code>:</p><ul class="list _bullet" id="-bpj41i_92"><li class="list__item" id="-bpj41i_96"><p id="-bpj41i_99">Un lien &quot;self&quot; pointant vers l'auteur lui-m&ecirc;me.</p></li><li class="list__item" id="-bpj41i_97"><p id="-bpj41i_100">Un lien &quot;authors&quot; pointant vers la collection de tous les auteurs (<code class="code" id="-bpj41i_101">getAllAuthors</code>).</p></li><li class="list__item" id="-bpj41i_98"><p id="-bpj41i_102">Un lien &quot;books&quot; pointant vers la sous-ressource listant les livres de cet auteur.</p></li></ul></li><li class="list__item" id="-bpj41i_87"><p id="-bpj41i_103">Testez l'endpoint <code class="code" id="-bpj41i_104">GET /api/authors/1</code> et v&eacute;rifiez que le corps JSON de la r&eacute;ponse contient bien le bloc <code class="code" id="-bpj41i_105">_links</code>avec les bonnes URLs.</p></li></ol></section><section class="chapter"><div class="collapse"><div class="collapse__title"><h2 id="correction-exercice-10" data-toc="correction-exercice-10">Correction exercice 10</h2></div><div class="collapse__content"><p id="-bpj41i_106"><span class="control" id="-bpj41i_112">1. <code class="code" id="-bpj41i_113">AuthorDto.java</code> modifi&eacute;</span></p><div class="code-block" data-lang="java">
+// package fr.formation.spring.bibliotech.api.dto;
+
+import lombok.Data;
+import org.springframework.hateoas.RepresentationModel;
+
+@Data
+@Schema(description = &quot;Représentation d'un auteur après création.&quot;)
+public class AuthorDto extends RepresentationModel&lt;AuthorDto&gt; {
+    // ... les champs restent les mêmes
+}
+</div><p id="-bpj41i_108"><span class="control" id="-bpj41i_114">2. <code class="code" id="-bpj41i_115">AuthorController.java</code> modifi&eacute;</span></p><div class="code-block" data-lang="java">
+// package fr.formation.spring.bibliotech.api;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+//...
+
+@RestController
+@RequestMapping(&quot;/api/authors&quot;)
+public class AuthorController {
+    // ...
+
+    @GetMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;AuthorDto&gt; getAuthorById(@PathVariable Long id) {
+        return this.authorRepository.findById(id)
+                .map(author -&gt; {
+                    AuthorDto authorDto = this.authorMapper.toDto(author);
+
+                    // Ajout des liens HATEOAS
+                    authorDto.add(linkTo(methodOn(AuthorController.class)
+                            .getAuthorById(id)).withSelfRel());
+
+                    authorDto.add(linkTo(methodOn(AuthorController.class)
+                            .getAllAuthors(null)).withRel(&quot;authors&quot;));
+
+                    authorDto.add(linkTo(methodOn(AuthorController.class)
+                            .getBooksByAuthor(id)).withRel(&quot;books&quot;));
+
+                    return authorDto;
+                })
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+    // ...
+}
+</div><p id="-bpj41i_110"><span class="control" id="-bpj41i_116">3. R&eacute;sultat JSON attendu pour <code class="code" id="-bpj41i_117">GET /api/authors/1</code></span></p><div class="code-block" data-lang="json">
+{
+  &quot;id&quot;: 1,
+  &quot;firstName&quot;: &quot;J.K.&quot;,
+  &quot;lastName&quot;: &quot;Rowling&quot;,
+  &quot;_links&quot;: {
+    &quot;self&quot;: {
+      &quot;href&quot;: &quot;http://localhost:8080/api/authors/1&quot;
+    },
+    &quot;authors&quot;: {
+      &quot;href&quot;: &quot;http://localhost:8080/api/authors&quot;
+    },
+    &quot;books&quot;: {
+      &quot;href&quot;: &quot;http://localhost:8080/api/authors/1/books&quot;
+    }
+  }
+}
+</div></div></div></section><section class="chapter"><h2 id="auto-valuation" data-toc="auto-valuation">Auto-&eacute;valuation</h2><ol class="list _decimal" id="-bpj41i_118" type="1"><li class="list__item" id="-bpj41i_119"><p id="-bpj41i_124"><span class="control" id="-bpj41i_125">(QCM)</span> Que signifie l'acronyme HATEOAS ? a) Hypertext And Text Engine Of Application State b) Hypermedia As The Engine Of Application State c) High-level Application Text Object And State d) Hypermedia And Timed-out Events On Application State</p></li><li class="list__item" id="-bpj41i_120"><p id="-bpj41i_126"><span class="control" id="-bpj41i_127">_ (Question ouverte)_</span> Quel est le principal avantage de l'utilisation de HATEOAS pour le client d'une API ?</p></li><li class="list__item" id="-bpj41i_121"><p id="-bpj41i_128"><span class="control" id="-bpj41i_129">(QCM)</span> Quelle classe de base de Spring HATEOAS un DTO doit-il &eacute;tendre pour pouvoir contenir des liens ? a) <code class="code" id="-bpj41i_130">LinkedModel</code> b) <code class="code" id="-bpj41i_131">ResourceSupport</code> c) <code class="code" id="-bpj41i_132">RepresentationModel</code> d) <code class="code" id="-bpj41i_133">HypermediaModel</code></p></li><li class="list__item" id="-bpj41i_122"><p id="-bpj41i_134"><span class="control" id="-bpj41i_135">_ (Question ouverte)_</span> Dans l'API de Spring HATEOAS, &agrave; quoi sert la construction <code class="code" id="-bpj41i_136">linkTo(methodOn(...))</code>?</p></li><li class="list__item" id="-bpj41i_123"><p id="-bpj41i_137"><span class="control" id="-bpj41i_138">_ (Question ouverte)_</span> Dans une r&eacute;ponse HATEOAS, que repr&eacute;sente la relation (<code class="code" id="-bpj41i_139">rel</code>) &quot;self&quot; ?</p></li></ol></section><section class="chapter"><h2 id="conclusion" data-toc="conclusion">Conclusion</h2><p id="-bpj41i_140">Vous avez atteint le sommet de la montagne REST. HATEOAS est le principe qui distingue une &quot;bonne&quot; API d'une API v&eacute;ritablement &quot;RESTful&quot;. En rendant vos r&eacute;ponses auto-descriptives, vous cr&eacute;ez des API incroyablement r&eacute;silientes au changement et faciles &agrave; explorer pour les clients. C'est un concept puissant qui, bien que demandant un peu plus de travail c&ocirc;t&eacute; serveur, offre des avantages consid&eacute;rables sur le long terme en termes de maintenabilit&eacute; et de d&eacute;couplage.</p><p id="-bpj41i_141">Vous disposez maintenant d'un panorama complet des techniques, des patterns et des philosophies qui animent le d&eacute;veloppement d'API REST modernes avec Spring Boot. Vous &ecirc;tes pr&ecirc;t &agrave; concevoir et &agrave; construire des services web de haute qualit&eacute;.</p></section><div class="last-modified">13 juin 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="005-01-paging-and-sorting.html" class="navigation-links__prev">Chapitre 5 : Patterns Avanc&eacute;s - G&eacute;rer de Grands Ensembles de Donn&eacute;es (L'Essentiel)</a><a href="005-03-api-versionning.html" class="navigation-links__next">Chapitre 5 : Le Versioning d'API - G&eacute;rer le Temps et l'&Eacute;volution</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b776/app.js"></script></body></html>

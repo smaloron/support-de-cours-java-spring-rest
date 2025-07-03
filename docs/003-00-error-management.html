@@ -1,0 +1,224 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#307FFF"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-07-03T08:02:14.61655"><title>Chapitre 4 : La Gestion des Erreurs - L'Essentiel | Spring REST</title><script type="application/json" id="virtual-toc-data">[{"id":"objectifs-p-dagogiques","level":0,"title":"Objectifs Pédagogiques","anchor":"#objectifs-p-dagogiques"},{"id":"introduction-le-copilote-de-votre-api","level":0,"title":"Introduction : Le Copilote de Votre API","anchor":"#introduction-le-copilote-de-votre-api"},{"id":"centraliser-la-gestion-des-erreurs-avec-restcontrolleradvice","level":0,"title":"Centraliser la Gestion des Erreurs avec @RestControllerAdvice","anchor":"#centraliser-la-gestion-des-erreurs-avec-restcontrolleradvice"},{"id":"exercice-6-g-rer-les-conflits-de-donn-es","level":0,"title":"Exercice 6 : Gérer les Conflits de Données","anchor":"#exercice-6-g-rer-les-conflits-de-donn-es"},{"id":"correction-exercice-6","level":0,"title":"Correction exercice 6","anchor":"#correction-exercice-6"},{"id":"auto-valuation","level":0,"title":"Auto-évaluation","anchor":"#auto-valuation"},{"id":"conclusion","level":0,"title":"Conclusion","anchor":"#conclusion"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b776/app.css" rel="stylesheet"><meta name="msapplication-TileColor" content="#000000"><link rel="apple-touch-icon" sizes="180x180" href="https://jetbrains.com/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://jetbrains.com/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="https://jetbrains.com/favicon-16x16.png"><meta name="msapplication-TileImage" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-144x144.png"><meta name="msapplication-square70x70logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-70x70.png"><meta name="msapplication-square150x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-150x150.png"><meta name="msapplication-wide310x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x150.png"><meta name="msapplication-square310x310logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x310.png"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Chapitre 4 : La Gestion des Erreurs - L'Essentiel | Spring REST"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="Spring REST Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation/003-00-error-management.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Chapitre 4 : La Gestion des Erreurs - L'Essentiel | Spring REST"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation/003-00-error-management.html#webpage",
+    "url": "writerside-documentation/003-00-error-management.html",
+    "name": "Chapitre 4 : La Gestion des Erreurs - L'Essentiel | Spring REST",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "Spring REST Help"
+}</script><!-- End Schema.org --></head><body data-id="003-00-error-management" data-main-title="Chapitre 4 : La Gestion des Erreurs - L'Essentiel" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs=""><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>Spring REST  Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="003-00-error-management" id="003-00-error-management.md">Chapitre 4 : La Gestion des Erreurs - L'Essentiel</h1><p id="-p16pjy_3">Jusqu'&agrave; pr&eacute;sent, nous avons construit les routes et les ponts de notre API. Tout fonctionne &agrave; merveille tant que les utilisateurs suivent le chemin balis&eacute;. Mais que se passe-t-il si quelqu'un se trompe d'adresse ? Ou essaie de construire une voiture avec des pi&egrave;ces d&eacute;fectueuses ? Une bonne API ne doit pas simplement afficher un message &quot;ERREUR&quot; cryptique. Elle doit guider l'utilisateur, comme un copilote calme et pr&eacute;cis.</p><section class="chapter"><h2 id="objectifs-p-dagogiques" data-toc="objectifs-p-dagogiques">Objectifs P&eacute;dagogiques</h2><p id="-p16pjy_11">&Agrave; la fin de cette partie, vous serez capable de :</p><ul class="list _bullet" id="-p16pjy_12"><li class="list__item" id="-p16pjy_13"><p id="-p16pjy_18">Comprendre les limites de la gestion d'erreurs par d&eacute;faut de Spring Boot.</p></li><li class="list__item" id="-p16pjy_14"><p id="-p16pjy_19">Cr&eacute;er un DTO standard pour repr&eacute;senter les erreurs de mani&egrave;re coh&eacute;rente.</p></li><li class="list__item" id="-p16pjy_15"><p id="-p16pjy_20">Impl&eacute;menter un gestionnaire d'exceptions global avec <code class="code" id="-p16pjy_21">@RestControllerAdvice</code>.</p></li><li class="list__item" id="-p16pjy_16"><p id="-p16pjy_22">G&eacute;rer les exceptions personnalis&eacute;es pour les erreurs m&eacute;tier (ex: ressource non trouv&eacute;e).</p></li><li class="list__item" id="-p16pjy_17"><p id="-p16pjy_23">Personnaliser la r&eacute;ponse d'erreur pour les &eacute;checs de validation (<code class="code" id="-p16pjy_24">400 Bad Request</code>) afin de la rendre plus claire pour le client.</p></li></ul></section><section class="chapter"><h2 id="introduction-le-copilote-de-votre-api" data-toc="introduction-le-copilote-de-votre-api">Introduction : Le Copilote de Votre API</h2><p id="-p16pjy_25">Imaginez que vous utilisez une application GPS. Vous entrez une destination qui n'existe pas. Que pr&eacute;f&eacute;rez-vous ?</p><ol class="list _decimal" id="-p16pjy_26" type="1"><li class="list__item" id="-p16pjy_29"><p id="-p16pjy_31">L'application plante avec un message &quot;Erreur #54B&quot;.</p></li><li class="list__item" id="-p16pjy_30"><p id="-p16pjy_32">L'application affiche un message clair : &quot;D&eacute;sol&eacute;, cette adresse est introuvable. Veuillez v&eacute;rifier votre saisie.&quot;</p></li></ol><p id="-p16pjy_27">La r&eacute;ponse est &eacute;vidente. Une bonne gestion des erreurs est un &eacute;l&eacute;ment cl&eacute; de l'exp&eacute;rience utilisateur (ou de l'exp&eacute;rience d&eacute;veloppeur pour le consommateur de votre API). Elle transforme la frustration en information utile.</p><p id="-p16pjy_28">Actuellement, notre API laisse Spring Boot g&eacute;rer les erreurs. C'est un bon d&eacute;but, mais les messages sont g&eacute;n&eacute;riques. Nous allons construire notre propre &quot;tour de contr&ocirc;le&quot; pour intercepter toutes les exceptions et les transformer en r&eacute;ponses HTTP claires, coh&eacute;rentes et professionnelles.</p></section><section class="chapter"><h2 id="centraliser-la-gestion-des-erreurs-avec-restcontrolleradvice" data-toc="centraliser-la-gestion-des-erreurs-avec-restcontrolleradvice">Centraliser la Gestion des Erreurs avec <code class="code" id="-p16pjy_39">@RestControllerAdvice</code></h2><p id="-p16pjy_34">Le secret pour ne pas r&eacute;p&eacute;ter la logique de gestion d'erreurs dans chaque m&eacute;thode de chaque contr&ocirc;leur est d'utiliser un <span class="control" id="-p16pjy_40">gestionnaire d'exceptions global</span>. Dans Spring, cela se fait avec une classe annot&eacute;e <code class="code" id="-p16pjy_41">@RestControllerAdvice</code>.</p><p id="-p16pjy_35">Cette classe agira comme un filet de s&eacute;curit&eacute;. Toute exception non attrap&eacute;e par un contr&ocirc;leur sera intercept&eacute;e ici. Nous pourrons alors d&eacute;cider quelle r&eacute;ponse HTTP renvoyer pour chaque type d'exception.</p><section class="chapter"><h3 id="1-un-format-d-erreur-standard-le-dto-d-erreur" data-toc="1-un-format-d-erreur-standard-le-dto-d-erreur">1. Un Format d'Erreur Standard : Le DTO d'Erreur</h3><p id="-p16pjy_42">Avant de g&eacute;rer les erreurs, d&eacute;finissons &agrave; quoi ressemblera une r&eacute;ponse d'erreur. Cr&eacute;ons un DTO pour cela.</p><section class="procedure-steps"><h3 id="-p16pjy_43" data-toc="-p16pjy_43">Création de ErrorDto.java</h3><p>Cr&eacute;ez ce DTO dans votre package `fr.formation.spring.bibliotech.api.dto`. </p><div class="code-block" data-lang="java">
+// package fr.formation.spring.bibliotech.api.dto;
+
+import lombok.Data;
+
+import java.time.LocalDateTime;
+import java.util.Map;
+
+@Data
+public class ErrorDto {
+    private LocalDateTime timestamp;
+    private int status;
+    private String error;
+    private String message;
+    private String path;
+    // Utilisé pour les erreurs de validation
+    private Map&lt;String, String&gt; validationErrors;
+
+    public ErrorDto(int status, String error, String message, String path) {
+        this.timestamp = LocalDateTime.now();
+        this.status = status;
+        this.error = error;
+        this.message = message;
+        this.path = path;
+    }
+}
+</div><ol class="list _decimal"></ol></section></section><section class="chapter"><h3 id="2-l-exception-personnalis-e-resourcenotfoundexception" data-toc="2-l-exception-personnalis-e-resourcenotfoundexception">2. L'Exception Personnalis&eacute;e : <code class="code" id="-p16pjy_50">ResourceNotFoundException</code></h3><p id="-p16pjy_46">Pour g&eacute;rer le cas o&ugrave; une ressource n'est pas trouv&eacute;e, il est plus propre de lancer une exception m&eacute;tier sp&eacute;cifique plut&ocirc;t que de retourner <code class="code" id="-p16pjy_51">null</code> ou un <code class="code" id="-p16pjy_52">Optional</code> vide jusqu'au contr&ocirc;leur.</p><section class="procedure-steps"><h3 id="-p16pjy_47" data-toc="-p16pjy_47">Création de ResourceNotFoundException.java</h3><p>Cr&eacute;ez un nouveau package `fr.formation.spring.bibliotech.exceptions` et placez-y cette classe. </p><div class="code-block" data-lang="java">
+// package fr.formation.spring.bibliotech.exceptions;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+// @ResponseStatus est un fallback. Si l'exception n'est pas gérée par
+// un @ExceptionHandler, Spring retournera ce statut.
+@ResponseStatus(HttpStatus.NOT_FOUND)
+public class ResourceNotFoundException extends RuntimeException {
+
+    public ResourceNotFoundException(String resourceName, Long id) {
+        super(String.format(&quot;La ressource '%s' avec l'id '%d' n'a pas été trouvée.&quot;,
+                resourceName, id));
+    }
+}
+</div><ol class="list _decimal"></ol></section><p id="-p16pjy_48">Maintenant, modifions notre <code class="code" id="-p16pjy_54">BookController</code> pour utiliser cette exception. C'est bien plus lisible !</p><div class="code-block" data-lang="java">
+// Dans BookController.java, méthode getBookById
+
+import fr.formation.spring.bibliotech.exceptions.ResourceNotFoundException;
+
+//...
+
+@GetMapping(&quot;/{id}&quot;)
+public ResponseEntity&lt;BookDto&gt; getBookById(@PathVariable Long id) {
+    Book book = this.bookRepository.findById(id)
+            .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Book&quot;, id));
+
+    return ResponseEntity.ok(this.bookMapper.toDto(book));
+}
+</div></section><section class="chapter"><h3 id="3-le-gestionnaire-global-restexceptionhandler" data-toc="3-le-gestionnaire-global-restexceptionhandler">3. Le Gestionnaire Global : <code class="code" id="-p16pjy_62">RestExceptionHandler</code></h3><p id="-p16pjy_56">Voici la pi&egrave;ce ma&icirc;tresse. Cr&eacute;ez cette classe dans un nouveau package <code class="code" id="-p16pjy_63">fr.formation.spring.bibliotech.api.errors</code>.</p><section class="procedure-steps"><h3 id="-p16pjy_57" data-toc="-p16pjy_57">Création de RestExceptionHandler.java</h3><div class="code-block" data-lang="java">
+// package fr.formation.spring.bibliotech.api.errors;
+
+import fr.formation.spring.bibliotech.api.dto.ErrorDto;
+import fr.formation.spring.bibliotech.exceptions.ResourceNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@RestControllerAdvice
+public class RestExceptionHandler {
+
+    // Gère notre exception personnalisée pour les ressources non trouvées
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity&lt;ErrorDto&gt; handleResourceNotFound(
+            ResourceNotFoundException ex, HttpServletRequest request) {
+
+        ErrorDto errorDto = new ErrorDto(
+                HttpStatus.NOT_FOUND.value(),
+                &quot;Resource Not Found&quot;,
+                ex.getMessage(),
+                request.getRequestURI());
+
+        return new ResponseEntity&lt;&gt;(errorDto, HttpStatus.NOT_FOUND);
+    }
+
+    // Gère les erreurs de validation de @Valid
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity&lt;ErrorDto&gt; handleValidationExceptions(
+            MethodArgumentNotValidException ex, HttpServletRequest request) {
+
+        Map&lt;String, String&gt; errors = new HashMap&lt;&gt;();
+        ex.getBindingResult().getFieldErrors().forEach(error -&gt;
+                errors.put(error.getField(), error.getDefaultMessage())
+        );
+
+        ErrorDto errorDto = new ErrorDto(
+                HttpStatus.BAD_REQUEST.value(),
+                &quot;Validation Error&quot;,
+                &quot;Un ou plusieurs champs sont invalides.&quot;,
+                request.getRequestURI());
+        errorDto.setValidationErrors(errors);
+
+        return new ResponseEntity&lt;&gt;(errorDto, HttpStatus.BAD_REQUEST);
+    }
+}
+</div><ol class="list _decimal"></ol></section><p id="-p16pjy_58"><span class="control" id="-p16pjy_65">Comment &ccedil;a marche ?</span></p><ol class="list _decimal" id="-p16pjy_59" type="1"><li class="list__item" id="-p16pjy_66"><p id="-p16pjy_70">L'annotation <code class="code" id="-p16pjy_71">@RestControllerAdvice</code> scanne tous les contr&ocirc;leurs de l'application.</p></li><li class="list__item" id="-p16pjy_67"><p id="-p16pjy_72">Quand la m&eacute;thode <code class="code" id="-p16pjy_73">getBookById</code> lance une <code class="code" id="-p16pjy_74">ResourceNotFoundException</code>, elle n'est pas attrap&eacute;e localement.</p></li><li class="list__item" id="-p16pjy_68"><p id="-p16pjy_75">Le <code class="code" id="-p16pjy_76">RestExceptionHandler</code> l'intercepte car il a une m&eacute;thode annot&eacute;e avec <code class="code" id="-p16pjy_77">@ExceptionHandler(ResourceNotFoundException.class)</code>.</p></li><li class="list__item" id="-p16pjy_69"><p id="-p16pjy_78">Cette m&eacute;thode s'ex&eacute;cute, construit notre <code class="code" id="-p16pjy_79">ErrorDto</code> standardis&eacute; et renvoie une r&eacute;ponse <code class="code" id="-p16pjy_80">404 Not Found</code> propre.</p></li></ol><p id="-p16pjy_60">D&eacute;sormais, si vous appelez <code class="code" id="-p16pjy_81">GET /api/books/999</code>, vous obtiendrez une r&eacute;ponse JSON claire et pr&eacute;visible !</p><div class="code-block" data-lang="json">
+{
+  &quot;timestamp&quot;: &quot;2023-10-27T10:30:00.12345&quot;,
+  &quot;status&quot;: 404,
+  &quot;error&quot;: &quot;Resource Not Found&quot;,
+  &quot;message&quot;: &quot;La ressource 'Book' avec l'id '999' n'a pas été trouvée.&quot;,
+  &quot;path&quot;: &quot;/api/books/999&quot;,
+  &quot;validationErrors&quot;: null
+}
+</div></section></section><section class="chapter"><h2 id="exercice-6-g-rer-les-conflits-de-donn-es" data-toc="exercice-6-g-rer-les-conflits-de-donn-es">Exercice 6 : G&eacute;rer les Conflits de Donn&eacute;es</h2><p id="-p16pjy_82">Un cas d'erreur m&eacute;tier tr&egrave;s courant est la tentative de cr&eacute;ation d'une ressource qui viole une contrainte d'unicit&eacute; (par exemple, un email ou un ISBN d&eacute;j&agrave; existant).</p><p id="-p16pjy_83"><span class="control" id="-p16pjy_85">&Eacute;nonc&eacute; :</span></p><ol class="list _decimal" id="-p16pjy_84" type="1"><li class="list__item" id="-p16pjy_86"><p id="-p16pjy_91">Cr&eacute;ez une nouvelle exception personnalis&eacute;e <code class="code" id="-p16pjy_92">DuplicateResourceException.java</code> dans le package <code class="code" id="-p16pjy_93">exceptions</code>. Elle prendra en param&egrave;tre le nom de la ressource, le nom du champ et la valeur dupliqu&eacute;e.</p></li><li class="list__item" id="-p16pjy_87"><p id="-p16pjy_94">Dans <code class="code" id="-p16pjy_95">BookRepository</code>, ajoutez une m&eacute;thode pour v&eacute;rifier l'existence d'un livre par son ISBN : <code class="code" id="-p16pjy_96">boolean existsByIsbn(String isbn);</code>.</p></li><li class="list__item" id="-p16pjy_88"><p id="-p16pjy_97">Dans <code class="code" id="-p16pjy_98">BookController</code>, modifiez la m&eacute;thode <code class="code" id="-p16pjy_99">createBook</code> pour v&eacute;rifier si un livre avec le m&ecirc;me ISBN existe d&eacute;j&agrave; avant de le sauvegarder. Si c'est le cas, lancez votre nouvelle <code class="code" id="-p16pjy_100">DuplicateResourceException</code>.</p></li><li class="list__item" id="-p16pjy_89"><p id="-p16pjy_101">Dans <code class="code" id="-p16pjy_102">RestExceptionHandler</code>, ajoutez une nouvelle m&eacute;thode <code class="code" id="-p16pjy_103">handleDuplicateResource</code> pour attraper cette exception. Elle devra retourner une r&eacute;ponse avec le statut <code class="code" id="-p16pjy_104">409 CONFLICT</code> et un <code class="code" id="-p16pjy_105">ErrorDto</code> correctement rempli.</p></li><li class="list__item" id="-p16pjy_90"><p id="-p16pjy_106">Testez en cr&eacute;ant un livre, puis en essayant d'en cr&eacute;er un second avec le m&ecirc;me ISBN.</p></li></ol></section><section class="chapter"><div class="collapse"><div class="collapse__title"><h2 id="correction-exercice-6" data-toc="correction-exercice-6">Correction exercice 6</h2></div><div class="collapse__content"><p id="-p16pjy_107"><span class="control" id="-p16pjy_120">1. La nouvelle exception <code class="code" id="-p16pjy_121">DuplicateResourceException.java</code></span></p><div class="code-block" data-lang="java">
+// package fr.formation.spring.bibliotech.exceptions;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(HttpStatus.CONFLICT)
+public class DuplicateResourceException extends RuntimeException {
+
+    public DuplicateResourceException(String resourceName,
+                                      String fieldName,
+                                      Object fieldValue) {
+        super(String.format(&quot;La ressource '%s' avec %s = '%s' existe déjà.&quot;,
+                resourceName, fieldName, fieldValue));
+    }
+}
+</div><p id="-p16pjy_109"><span class="control" id="-p16pjy_122">2. La m&eacute;thode dans <code class="code" id="-p16pjy_123">BookRepository.java</code></span></p><div class="code-block" data-lang="java">
+// package fr.formation.spring.bibliotech.dal.repositories;
+
+import fr.formation.spring.bibliotech.dal.entities.Book;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface BookRepository extends JpaRepository&lt;Book, Long&gt; {
+    // Nouvelle méthode pour vérifier l'unicité de l'ISBN
+    boolean existsByIsbn(String isbn);
+}
+</div><p id="-p16pjy_111"><span class="control" id="-p16pjy_124">3. La modification dans <code class="code" id="-p16pjy_125">BookController.java</code></span></p><div class="code-block" data-lang="java">
+// Dans la méthode createBook du BookController
+
+import fr.formation.spring.bibliotech.exceptions.DuplicateResourceException;
+
+//...
+
+@PostMapping
+public ResponseEntity&lt;BookDto&gt; createBook(
+        @Valid @RequestBody BookSaveDto bookToCreate) {
+
+    // Ajout de la vérification d'unicité
+    if (this.bookRepository.existsByIsbn(bookToCreate.getIsbn())) {
+        throw new DuplicateResourceException(&quot;Book&quot;, &quot;ISBN&quot;, bookToCreate.getIsbn());
+    }
+
+    Book newBook = this.bookMapper.toEntity(bookToCreate);
+    Book savedBook = this.bookRepository.save(newBook);
+
+    URI location = ServletUriComponentsBuilder
+            .fromCurrentRequest().path(&quot;/{id}&quot;)
+            .buildAndExpand(savedBook.getId()).toUri();
+
+    return ResponseEntity.created(location)
+            .body(this.bookMapper.toDto(savedBook));
+}
+</div><p id="-p16pjy_113"><span class="control" id="-p16pjy_126">4. Le nouveau handler dans <code class="code" id="-p16pjy_127">RestExceptionHandler.java</code></span></p><div class="code-block" data-lang="java">
+// Dans RestExceptionHandler.java
+
+import fr.formation.spring.bibliotech.exceptions.DuplicateResourceException;
+
+//...
+
+@ExceptionHandler(DuplicateResourceException.class)
+public ResponseEntity&lt;ErrorDto&gt; handleDuplicateResource(
+        DuplicateResourceException ex, HttpServletRequest request) {
+
+    ErrorDto errorDto = new ErrorDto(
+            HttpStatus.CONFLICT.value(),
+            &quot;Duplicate Resource&quot;,
+            ex.getMessage(),
+            request.getRequestURI());
+
+    return new ResponseEntity&lt;&gt;(errorDto, HttpStatus.CONFLICT);
+}
+</div><p id="-p16pjy_115"><span class="control" id="-p16pjy_128">5. Test avec une requ&ecirc;te HTTP</span> D'abord, cr&eacute;ez le livre de Tolkien.</p><div class="code-block" data-lang="http">
+POST http://localhost:8080/api/books
+Content-Type: application/json
+
+{
+  &quot;title&quot;: &quot;Le Seigneur des anneaux&quot;,
+  &quot;isbn&quot;: &quot;978-2266120662&quot;,
+  &quot;publicationDate&quot;: &quot;1954-07-29&quot;,
+  &quot;authorIds&quot;: [2]
+}
+</div><p id="-p16pjy_117">Ensuite, essayez de le cr&eacute;er &agrave; nouveau avec le m&ecirc;me ISBN.</p><div class="code-block" data-lang="http">
+POST http://localhost:8080/api/books
+Content-Type: application/json
+
+{
+  &quot;title&quot;: &quot;Un autre livre&quot;,
+  &quot;isbn&quot;: &quot;978-2266120662&quot;,
+  &quot;publicationDate&quot;: &quot;2024-01-01&quot;,
+  &quot;authorIds&quot;: [1]
+}
+</div><p id="-p16pjy_119">Vous devriez recevoir une r&eacute;ponse <code class="code" id="-p16pjy_129">409 Conflict</code> avec un corps de message clair.</p></div></div></section><section class="chapter"><h2 id="auto-valuation" data-toc="auto-valuation">Auto-&eacute;valuation</h2><ol class="list _decimal" id="-p16pjy_130" type="1"><li class="list__item" id="-p16pjy_131"><p id="-p16pjy_136"><span class="control" id="-p16pjy_137">(QCM)</span> Quelle annotation transforme une classe en un gestionnaire d'exceptions global pour les contr&ocirc;leurs REST ? a) <code class="code" id="-p16pjy_138">@ControllerAdvice</code> b) <code class="code" id="-p16pjy_139">@ExceptionHandler</code> c) <code class="code" id="-p16pjy_140">@RestControllerAdvice</code> d) <code class="code" id="-p16pjy_141">@GlobalHandler</code></p></li><li class="list__item" id="-p16pjy_132"><p id="-p16pjy_142"><span class="control" id="-p16pjy_143">_ (Question ouverte)_</span> Quel est l'int&eacute;r&ecirc;t de cr&eacute;er une exception personnalis&eacute;e comme <code class="code" id="-p16pjy_144">ResourceNotFoundException</code> au lieu de laisser une <code class="code" id="-p16pjy_145">NullPointerException</code> se propager ?</p></li><li class="list__item" id="-p16pjy_133"><p id="-p16pjy_146"><span class="control" id="-p16pjy_147">(QCM)</span> Quel est le code de statut HTTP s&eacute;mantiquement correct pour indiquer qu'une ressource ne peut pas &ecirc;tre cr&eacute;&eacute;e car elle existe d&eacute;j&agrave; ? a) 400 Bad Request b) 404 Not Found c) 409 Conflict d) 500 Internal Server Error</p></li><li class="list__item" id="-p16pjy_134"><p id="-p16pjy_148"><span class="control" id="-p16pjy_149">_ (Question ouverte)_</span> Dans un <code class="code" id="-p16pjy_150">@RestControllerAdvice</code>, comment peut-on acc&eacute;der &agrave; l'URL de la requ&ecirc;te qui a provoqu&eacute; l'erreur ?</p></li><li class="list__item" id="-p16pjy_135"><p id="-p16pjy_151"><span class="control" id="-p16pjy_152">_ (Question ouverte)_</span> Expliquez bri&egrave;vement le r&ocirc;le de la m&eacute;thode <code class="code" id="-p16pjy_153">handleValidationExceptions</code> dans notre <code class="code" id="-p16pjy_154">RestExceptionHandler</code>. Que g&egrave;re-t-elle et pourquoi est-ce utile ?</p></li></ol></section><section class="chapter"><h2 id="conclusion" data-toc="conclusion">Conclusion</h2><p id="-p16pjy_155">Vous venez d'ajouter une couche de professionnalisme et de robustesse indispensable &agrave; votre API. En centralisant la gestion des erreurs, vous avez rendu votre code de contr&ocirc;leur plus propre et plus lisible. Plus important encore, votre API communique d&eacute;sormais de mani&egrave;re claire et pr&eacute;visible, m&ecirc;me en cas de probl&egrave;me. Elle ne se contente plus de &quot;tomber en panne&quot;, elle dialogue avec son utilisateur.</p><p id="-p16pjy_156">Maintenant que notre API est fonctionnelle, propre et robuste, comment faire pour que d'autres d&eacute;veloppeurs puissent l' utiliser facilement ? Comment leur expliquer quels endpoints sont disponibles, quels param&egrave;tres ils attendent et quelles r&eacute;ponses ils retournent ? C'est le r&ocirc;le de la documentation, et nous verrons dans le prochain chapitre comment l'automatiser avec un outil puissant : Swagger/OpenAPI.</p></section><div class="last-modified">13 juin 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="002-01-validation-and-mapping.html" class="navigation-links__prev">Chapitre 3 : Validation et Mapping Automatis&eacute; - Pour aller plus loin</a><a href="004-00-advanced-rest-patterns.html" class="navigation-links__next">Chapitre 5 : Patterns REST Avanc&eacute;s - L'Essentiel</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b776/app.js"></script></body></html>

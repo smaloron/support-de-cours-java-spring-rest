@@ -1,0 +1,155 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#307FFF"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-07-03T08:02:14.513658"><title>Chapitre 5 : La S&eacute;curisation par Cl&eacute; d'API - Prot&eacute;ger vos Endpoints | Spring REST</title><script type="application/json" id="virtual-toc-data">[{"id":"objectifs-p-dagogiques","level":0,"title":"Objectifs Pédagogiques","anchor":"#objectifs-p-dagogiques"},{"id":"introduction-le-pass-du-club-priv","level":0,"title":"Introduction : Le Pass du Club Privé","anchor":"#introduction-le-pass-du-club-priv"},{"id":"1-stocker-la-cl-d-api","level":0,"title":"1. Stocker la Clé d\u0027API","anchor":"#1-stocker-la-cl-d-api"},{"id":"2-le-filtre-de-s-curit-notre-videur","level":0,"title":"2. Le Filtre de Sécurité : Notre \"Videur\"","anchor":"#2-le-filtre-de-s-curit-notre-videur"},{"id":"3-enregistrer-et-appliquer-le-filtre","level":0,"title":"3. Enregistrer et Appliquer le Filtre","anchor":"#3-enregistrer-et-appliquer-le-filtre"},{"id":"exercice-14-s-curiser-les-op-rations-sur-les-auteurs","level":0,"title":"Exercice 14 : Sécuriser les Opérations sur les Auteurs","anchor":"#exercice-14-s-curiser-les-op-rations-sur-les-auteurs"},{"id":"correction-exercice-14","level":0,"title":"Correction exercice 14","anchor":"#correction-exercice-14"},{"id":"conclusion","level":0,"title":"Conclusion","anchor":"#conclusion"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b776/app.css" rel="stylesheet"><meta name="msapplication-TileColor" content="#000000"><link rel="apple-touch-icon" sizes="180x180" href="https://jetbrains.com/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://jetbrains.com/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="https://jetbrains.com/favicon-16x16.png"><meta name="msapplication-TileImage" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-144x144.png"><meta name="msapplication-square70x70logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-70x70.png"><meta name="msapplication-square150x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-150x150.png"><meta name="msapplication-wide310x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x150.png"><meta name="msapplication-square310x310logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x310.png"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Chapitre 5 : La S&eacute;curisation par Cl&eacute; d'API - Prot&eacute;ger vos Endpoints | Spring REST"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="Spring REST Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation/005-04-secure-api.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Chapitre 5 : La S&eacute;curisation par Cl&eacute; d'API - Prot&eacute;ger vos Endpoints | Spring REST"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation/005-04-secure-api.html#webpage",
+    "url": "writerside-documentation/005-04-secure-api.html",
+    "name": "Chapitre 5 : La S&eacute;curisation par Cl&eacute; d'API - Prot&eacute;ger vos Endpoints | Spring REST",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "Spring REST Help"
+}</script><!-- End Schema.org --></head><body data-id="005-04-secure-api" data-main-title="Chapitre 5 : La Sécurisation par Clé d'API - Protéger vos Endpoints" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="004-00-advanced-rest-patterns.md|Chapitre 5 : Patterns REST Avancés - L'Essentiel"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>Spring REST  Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="005-04-secure-api" id="005-04-secure-api.md">Chapitre 5 : La Sécurisation par Clé d'API - Protéger vos Endpoints</h1><p id="aus0zs_3">Notre API est d&eacute;sormais performante, &eacute;volutive et bien structur&eacute;e. Cependant, nous avons laiss&eacute; la porte d'entr&eacute;e grande ouverte. N'importe qui peut cr&eacute;er, modifier ou supprimer des livres et des auteurs. Il est temps d'installer une premi&egrave;re serrure. Nous n'allons pas encore construire un coffre-fort biom&eacute;trique (ce serait le r&ocirc;le de Spring Security et OAuth2), mais nous allons mettre en place un syst&egrave;me de cl&eacute;, simple et efficace, pour les op&eacute;rations sensibles.</p><section class="chapter"><h2 id="objectifs-p-dagogiques" data-toc="objectifs-p-dagogiques">Objectifs P&eacute;dagogiques</h2><p id="aus0zs_12">&Agrave; la fin de cette partie, vous serez capable de :</p><ul class="list _bullet" id="aus0zs_13"><li class="list__item" id="aus0zs_14"><p id="aus0zs_20">Comprendre le principe de l'authentification par cl&eacute; d'API.</p></li><li class="list__item" id="aus0zs_15"><p id="aus0zs_21">Stocker de mani&egrave;re s&eacute;curis&eacute;e une cl&eacute; d'API dans la configuration de l'application.</p></li><li class="list__item" id="aus0zs_16"><p id="aus0zs_22">Impl&eacute;menter un <code class="code" id="aus0zs_23">Filter</code> Java pour intercepter les requ&ecirc;tes entrantes.</p></li><li class="list__item" id="aus0zs_17"><p id="aus0zs_24">Valider la pr&eacute;sence et la conformit&eacute; d'une cl&eacute; d'API dans un en-t&ecirc;te HTTP.</p></li><li class="list__item" id="aus0zs_18"><p id="aus0zs_25">Bloquer les requ&ecirc;tes non autoris&eacute;es avant qu'elles n'atteignent les contr&ocirc;leurs.</p></li><li class="list__item" id="aus0zs_19"><p id="aus0zs_26">Appliquer cette s&eacute;curit&eacute; de mani&egrave;re cibl&eacute;e &agrave; des endpoints sp&eacute;cifiques.</p></li></ul></section><section class="chapter"><h2 id="introduction-le-pass-du-club-priv" data-toc="introduction-le-pass-du-club-priv">Introduction : Le Pass du Club Priv&eacute;</h2><p id="aus0zs_27">Imaginez que notre API est un grand b&acirc;timent. Les salles de lecture (<code class="code" id="aus0zs_29">GET</code>) sont ouvertes au public, tout le monde peut y entrer. Mais les bureaux o&ugrave; l'on ajoute ou retire des livres (<code class="code" id="aus0zs_30">POST</code>, <code class="code" id="aus0zs_31">PUT</code>, <code class="code" id="aus0zs_32">DELETE</code>) sont un club priv&eacute;. Pour y acc&eacute;der, il faut pr&eacute;senter une carte de membre &agrave; l'entr&eacute;e. Cette carte de membre, c'est notre <span class="control" id="aus0zs_33">cl&eacute; d'API</span>.</p><p id="aus0zs_28">La s&eacute;curit&eacute; par cl&eacute; d'API est un m&eacute;canisme simple : le client doit inclure une cha&icirc;ne de caract&egrave;res secr&egrave;te (la cl&eacute;) dans chaque requ&ecirc;te sensible. C&ocirc;t&eacute; serveur, un &quot;videur&quot; v&eacute;rifiera la validit&eacute; de cette cl&eacute; avant de laisser la requ&ecirc;te passer jusqu'&agrave; nos contr&ocirc;leurs. Ce &quot;videur&quot;, en Spring Boot, sera un <span class="control" id="aus0zs_34">filtre (Filter)</span>.</p></section><section class="chapter"><h2 id="1-stocker-la-cl-d-api" data-toc="1-stocker-la-cl-d-api">1. Stocker la Cl&eacute; d'API</h2><p id="aus0zs_35">La premi&egrave;re &eacute;tape est de d&eacute;finir notre cl&eacute; secr&egrave;te. Ne la codez jamais en dur ! Utilisons notre fichier <code class="code" id="aus0zs_37">application.properties</code>.</p><section class="procedure-steps"><h3 id="aus0zs_36" data-toc="aus0zs_36">Configuration de la clé d'API</h3><p id="aus0zs_38">Ajoutez ces lignes &agrave; votre fichier <code class="code" id="aus0zs_40">src/main/resources/application.properties</code>:</p><div class="code-block" data-lang="properties">
+# -- Sécurité de l'API --
+# Le nom de l'en-tête HTTP que les clients devront utiliser
+bibliotech.security.api-key.header-name=X-API-KEY
+# La valeur secrète de la clé d'API (dans un vrai projet, utilisez un vault !)
+bibliotech.security.api-key.value=BiblioTechSecretKey123!
+</div><ol class="list _decimal"></ol></section></section><section class="chapter"><h2 id="2-le-filtre-de-s-curit-notre-videur" data-toc="2-le-filtre-de-s-curit-notre-videur">2. Le Filtre de S&eacute;curit&eacute; : Notre &quot;Videur&quot;</h2><p id="aus0zs_41">Un filtre est un composant qui intercepte une requ&ecirc;te HTTP <span class="emphasis" id="aus0zs_43">avant</span> qu'elle n'arrive au <code class="code" id="aus0zs_44">DispatcherServlet</code> de Spring (et donc &agrave; notre contr&ocirc;leur). C'est l'endroit id&eacute;al pour v&eacute;rifier les autorisations.</p><section class="procedure-steps"><h3 id="aus0zs_42" data-toc="aus0zs_42">Création du filtre ApiKeyAuthFilter.java</h3><p>Cr&eacute;ez un nouveau package `fr.formation.spring.bibliotech.security` et ajoutez-y cette classe : </p><div class="code-block" data-lang="java">
+// package fr.formation.spring.bibliotech.security;
+
+import jakarta.servlet.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+
+@Component
+public class ApiKeyAuthFilter implements Filter {
+
+    // Injection des valeurs depuis application.properties
+    @Value(&quot;${bibliotech.security.api-key.header-name}&quot;)
+    private String apiKeyHeaderName;
+
+    @Value(&quot;${bibliotech.security.api-key.value}&quot;)
+    private String validApiKey;
+
+    @Override
+    public void doFilter(ServletRequest request,
+                         ServletResponse response,
+                         FilterChain chain)
+            throws IOException, ServletException {
+
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
+
+        // 1. Extraire la clé de l'en-tête de la requête
+        String apiKey = httpRequest.getHeader(apiKeyHeaderName);
+
+        // 2. Vérifier la clé
+        if (validApiKey.equals(apiKey)) {
+            // Clé valide, on laisse la requête continuer son chemin
+            chain.doFilter(request, response);
+        } else {
+            // Clé invalide ou manquante, on bloque la requête
+            httpResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
+            httpResponse.getWriter().write(&quot;API Key invalide ou manquante.&quot;);
+        }
+    }
+}
+</div><ol class="list _decimal"></ol></section></section><section class="chapter"><h2 id="3-enregistrer-et-appliquer-le-filtre" data-toc="3-enregistrer-et-appliquer-le-filtre">3. Enregistrer et Appliquer le Filtre</h2><p id="aus0zs_46">Maintenant que notre filtre existe, nous devons dire &agrave; Spring quand l'utiliser. Nous ne voulons pas prot&eacute;ger tous les endpoints, seulement les plus sensibles. Pour cela, nous cr&eacute;ons un <code class="code" id="aus0zs_50">Bean</code> de configuration.</p><section class="procedure-steps"><h3 id="aus0zs_47" data-toc="aus0zs_47">Configuration de l'enregistrement du filtre</h3><p>Cr&eacute;ez une nouvelle classe `FilterConfig.java` dans votre package `config`. </p><div class="code-block" data-lang="java">
+// package fr.formation.spring.bibliotech.config;
+
+import fr.formation.spring.bibliotech.security.ApiKeyAuthFilter;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class FilterConfig {
+
+    private final ApiKeyAuthFilter apiKeyAuthFilter;
+
+    public FilterConfig(ApiKeyAuthFilter apiKeyAuthFilter) {
+        this.apiKeyAuthFilter = apiKeyAuthFilter;
+    }
+
+    @Bean
+    public FilterRegistrationBean&lt;ApiKeyAuthFilter&gt; registerApiKeyFilter() {
+        FilterRegistrationBean&lt;ApiKeyAuthFilter&gt; registration = new FilterRegistrationBean&lt;&gt;();
+        registration.setFilter(apiKeyAuthFilter);
+
+        // Appliquer ce filtre uniquement aux endpoints de création,
+        // modification et suppression des livres.
+        registration.addUrlPatterns(
+                &quot;/api/v1/books&quot;,      // Protège POST
+                &quot;/api/v1/books/*&quot;     // Protège PUT, DELETE
+        );
+        return registration;
+    }
+}
+</div><ol class="list _decimal"></ol></section><aside class="prompt" data-type="note" data-title="Comprendre les URL Patterns" id="aus0zs_48"><ul class="list _bullet" id="aus0zs_52"><li class="list__item" id="aus0zs_53"><p><code class="code" id="aus0zs_55">/api/v1/books</code>: Cible exactement cette URL, ce qui correspond &agrave; notre endpoint <code class="code" id="aus0zs_56">POST</code>.</p></li><li class="list__item" id="aus0zs_54"><p><code class="code" id="aus0zs_57">/api/v1/books/*</code>: Cible toutes les URLs qui commencent par <code class="code" id="aus0zs_58">/api/v1/books/</code>, ce qui prot&egrave;ge nos endpoints <code class="code" id="aus0zs_59">GET /{id}</code>, <code class="code" id="aus0zs_60">PUT /{id}</code> et <code class="code" id="aus0zs_61">DELETE /{id}</code>. Nous pourrions affiner cela si nous voulions laisser le <code class="code" id="aus0zs_62">GET /{id}</code> public.</p></li></ul></aside><style>.theme-dark .plantuml > svg {filter: hue-rotate(180deg) invert(0.9);}div.plantuml {overflow-x: auto;}</style><div class="plantuml"><?xml version="1.0" encoding="us-ascii" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="475px" preserveAspectRatio="none" style="width:504px;height:475px;background:#FFFFFF;" version="1.1" viewBox="0 0 504 475" width="504px" zoomAndPan="magnify"><defs/><g><rect fill="#FFFFFF" height="256.1289" style="stroke:#181818;stroke-width:1.0;" width="10" x="244" y="128.1094"/><rect fill="#FFFFFF" height="29.3105" style="stroke:#181818;stroke-width:1.0;" width="10" x="423" y="224.041"/><rect fill="none" height="234.1289" style="stroke:#000000;stroke-width:1.5;" width="487" x="10" y="143.1094"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="43" x2="43" y1="81.4883" y2="394.2383"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="248.5" x2="248.5" y1="81.4883" y2="394.2383"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="428" x2="428" y1="81.4883" y2="394.2383"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="40" x="20" y="78.5352">Client</text><ellipse cx="43" cy="13.5" fill="#E2E2F0" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><path d="M43,21.5 L43,48.5 M30,29.5 L56,29.5 M43,48.5 L30,63.5 M43,48.5 L56,63.5 " fill="none" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="40" x="20" y="406.7734">Client</text><ellipse cx="43" cy="418.2266" fill="#E2E2F0" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><path d="M43,426.2266 L43,453.2266 M30,434.2266 L56,434.2266 M43,453.2266 L30,468.2266 M43,453.2266 L56,468.2266 " fill="none" style="stroke:#181818;stroke-width:0.5;"/><rect fill="#E2E2F0" height="30.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="129" x="184.5" y="50"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="115" x="191.5" y="70.5352">ApiKeyAuthFilter</text><rect fill="#E2E2F0" height="30.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="129" x="184.5" y="393.2383"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="115" x="191.5" y="413.7734">ApiKeyAuthFilter</text><rect fill="#E2E2F0" height="30.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="118" x="369" y="50"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="104" x="376" y="70.5352">BookController</text><rect fill="#E2E2F0" height="30.4883" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="118" x="369" y="393.2383"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="104" x="376" y="413.7734">BookController</text><rect fill="#FFFFFF" height="256.1289" style="stroke:#181818;stroke-width:1.0;" width="10" x="244" y="128.1094"/><rect fill="#FFFFFF" height="29.3105" style="stroke:#181818;stroke-width:1.0;" width="10" x="423" y="224.041"/><polygon fill="#181818" points="232,124.1094,242,128.1094,232,132.1094,236,128.1094" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:2.0;" x1="43" x2="238" y1="128.1094" y2="128.1094"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="130" x="50" y="108.0566">POST /api/v1/books</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="139" x="50" y="123.3672">Header: X-API-KEY: ...</text><path d="M10,143.1094 L72,143.1094 L72,150.4199 L62,160.4199 L10,160.4199 L10,143.1094 " fill="#EEEEEE" style="stroke:#000000;stroke-width:1.5;"/><rect fill="none" height="234.1289" style="stroke:#000000;stroke-width:1.5;" width="487" x="10" y="143.1094"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="17" x="25" y="156.6777">alt</text><text fill="#000000" font-family="sans-serif" font-size="11" font-weight="bold" lengthAdjust="spacing" textLength="64" x="87" y="155.7441">[Cl&#233; valide]</text><line style="stroke:#181818;stroke-width:2.0;" x1="254" x2="296" y1="181.7305" y2="181.7305"/><line style="stroke:#181818;stroke-width:2.0;" x1="296" x2="296" y1="181.7305" y2="194.7305"/><line style="stroke:#181818;stroke-width:2.0;" x1="255" x2="296" y1="194.7305" y2="194.7305"/><polygon fill="#181818" points="265,190.7305,255,194.7305,265,198.7305,261,194.7305" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="85" x="261" y="176.9883">Validation OK</text><polygon fill="#181818" points="411,220.041,421,224.041,411,228.041,415,224.041" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:2.0;" x1="254" x2="417" y1="224.041" y2="224.041"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="150" x="261" y="219.2988">Laisse passer la requ&#234;te</text><polygon fill="#181818" points="265,249.3516,255,253.3516,265,257.3516,261,253.3516" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:2.0;stroke-dasharray:2.0,2.0;" x1="259" x2="427" y1="253.3516" y2="253.3516"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="141" x="271" y="248.6094">R&#233;ponse (201 Created)</text><polygon fill="#181818" points="54,278.6621,44,282.6621,54,286.6621,50,282.6621" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:2.0;stroke-dasharray:2.0,2.0;" x1="48" x2="243" y1="282.6621" y2="282.6621"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="141" x="60" y="277.9199">R&#233;ponse (201 Created)</text><line style="stroke:#000000;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="10" x2="497" y1="291.6621" y2="291.6621"/><text fill="#000000" font-family="sans-serif" font-size="11" font-weight="bold" lengthAdjust="spacing" textLength="158" x="15" y="302.2969">[Cl&#233; invalide ou manquante]</text><line style="stroke:#181818;stroke-width:2.0;" x1="254" x2="296" y1="326.9277" y2="326.9277"/><line style="stroke:#181818;stroke-width:2.0;" x1="296" x2="296" y1="326.9277" y2="339.9277"/><line style="stroke:#181818;stroke-width:2.0;" x1="255" x2="296" y1="339.9277" y2="339.9277"/><polygon fill="#181818" points="265,335.9277,255,339.9277,265,343.9277,261,339.9277" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="85" x="261" y="322.1855">Validation KO</text><polygon fill="#181818" points="54,365.2383,44,369.2383,54,373.2383,50,369.2383" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:2.0;stroke-dasharray:2.0,2.0;" x1="48" x2="243" y1="369.2383" y2="369.2383"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="177" x="60" y="364.4961">R&#233;ponse (401 Unauthorized)</text><!--SRC=[ZL7DIiD04BxlKmmzwI6jBPvo469Hb0WjMiM2bp4PwD3jRhgxgUWRrTVeYpdviOr2eNlOmyptDpD-oQP0Xolmj2x9P9GuPpzc2ywMXho7aLAO1UjWh9bCK08Ed7619i0jwq0Eq4ClAJYbpwGCYwRO-mCSMnESrRe5NrkxF9HwIZNQ45sraZ5C9qyp6631Wyrmy2vu_sRk2FEgznebq_ielPd7qE_tgtYymK0jL_9gSTIxBMnGSquAvBLHzmuGmqlLnS3Mm2Jz1-e4Zk41sNk20kLte16Sh6ht7HhblVs1KzSx4b7Nzd6tBQmHlRFHnH36ZeIRdzUKd8w9_IQheZMxEYf4Mahr-6oQ1O0jOOLcNSefJjb6EZd1yr8ydmtAmQtZhzhOv4frHcZuFm00]--></g></svg></div></section><section class="chapter"><h2 id="exercice-14-s-curiser-les-op-rations-sur-les-auteurs" data-toc="exercice-14-s-curiser-les-op-rations-sur-les-auteurs">Exercice 14 : S&eacute;curiser les Op&eacute;rations sur les Auteurs</h2><p id="aus0zs_63">Vous avez s&eacute;curis&eacute; les op&eacute;rations d'&eacute;criture sur les livres. Maintenant, faites de m&ecirc;me pour les auteurs.</p><p id="aus0zs_64"><span class="control" id="aus0zs_66">&Eacute;nonc&eacute; :</span></p><ol class="list _decimal" id="aus0zs_65" type="1"><li class="list__item" id="aus0zs_67"><p id="aus0zs_70">Le besoin est de s&eacute;curiser uniquement les op&eacute;rations qui modifient les donn&eacute;es des auteurs : <code class="code" id="aus0zs_71">POST</code>, <code class="code" id="aus0zs_72">PUT</code>, <code class="code" id="aus0zs_73">DELETE</code>. Les op&eacute;rations de lecture (<code class="code" id="aus0zs_74">GET</code>) doivent rester publiques et accessibles sans cl&eacute; d'API.</p></li><li class="list__item" id="aus0zs_68"><p id="aus0zs_75">Modifiez la configuration de votre filtre (<code class="code" id="aus0zs_76">FilterConfig.java</code>) pour ajouter les URL patterns n&eacute;cessaires afin de prot&eacute;ger les endpoints d'&eacute;criture du <code class="code" id="aus0zs_77">AuthorController</code>.</p></li><li class="list__item" id="aus0zs_69"><p id="aus0zs_78">Testez votre configuration :</p><ul class="list _bullet" id="aus0zs_79"><li class="list__item" id="aus0zs_80"><p id="aus0zs_83">Envoyez une requ&ecirc;te <code class="code" id="aus0zs_84">GET /api/v1/authors</code>. Elle doit r&eacute;ussir sans cl&eacute;.</p></li><li class="list__item" id="aus0zs_81"><p id="aus0zs_85">Envoyez une requ&ecirc;te <code class="code" id="aus0zs_86">POST /api/v1/authors</code> sans la cl&eacute; <code class="code" id="aus0zs_87">X-API-KEY</code>. Elle doit &eacute;chouer avec une erreur <code class="code" id="aus0zs_88">401 Unauthorized</code>.</p></li><li class="list__item" id="aus0zs_82"><p id="aus0zs_89">Renvoyez la m&ecirc;me requ&ecirc;te <code class="code" id="aus0zs_90">POST</code> en ajoutant l'en-t&ecirc;te <code class="code" id="aus0zs_91">X-API-KEY: BiblioTechSecretKey123!</code>. Elle doit maintenant r&eacute;ussir.</p></li></ul></li></ol></section><section class="chapter"><div class="collapse"><div class="collapse__title"><h2 id="correction-exercice-14" data-toc="correction-exercice-14">Correction exercice 14</h2></div><div class="collapse__content"><p id="aus0zs_92"><span class="control" id="aus0zs_98">Solution dans <code class="code" id="aus0zs_99">FilterConfig.java</code></span></p><p id="aus0zs_93">La cl&eacute; est d'ajouter les bons patterns d'URL au <code class="code" id="aus0zs_100">FilterRegistrationBean</code>.</p><div class="code-block" data-lang="java">
+// package fr.formation.spring.bibliotech.config;
+
+import fr.formation.spring.bibliotech.security.ApiKeyAuthFilter;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class FilterConfig {
+
+    private final ApiKeyAuthFilter apiKeyAuthFilter;
+
+    public FilterConfig(ApiKeyAuthFilter apiKeyAuthFilter) {
+        this.apiKeyAuthFilter = apiKeyAuthFilter;
+    }
+
+    @Bean
+    public FilterRegistrationBean&lt;ApiKeyAuthFilter&gt; registerApiKeyFilter() {
+        FilterRegistrationBean&lt;ApiKeyAuthFilter&gt; registration = new FilterRegistrationBean&lt;&gt;();
+        registration.setFilter(apiKeyAuthFilter);
+
+        // On ajoute les patterns pour les auteurs aux patterns existants
+        registration.addUrlPatterns(
+                // Patterns pour les Livres (déjà présents)
+                &quot;/api/v1/books&quot;,
+                &quot;/api/v1/books/*&quot;,
+
+                // Nouveaux patterns pour les Auteurs
+                &quot;/api/v1/authors&quot;,    // Protège POST /api/v1/authors
+                &quot;/api/v1/authors/*&quot;   // Protège PUT et DELETE /api/v1/authors/{id}
+        );
+        return registration;
+    }
+}
+</div><p id="aus0zs_95"><span class="emphasis" id="aus0zs_101">Note : Pour &ecirc;tre plus pr&eacute;cis et laisser <code class="code" id="aus0zs_102">GET /.../{id}</code> public, il faudrait mapper le filtre &agrave; des verbes HTTP sp&eacute;cifiques, ce qui est une configuration plus avanc&eacute;e. Pour l'instant, cette solution prot&egrave;ge toutes les &eacute;critures.</span></p><p id="aus0zs_96"><span class="control" id="aus0zs_103">Requ&ecirc;tes de test dans <code class="code" id="aus0zs_104">requests.http</code></span></p><div class="code-block" data-lang="http">
+### GET Auteurs (doit fonctionner sans clé)
+GET http://localhost:8080/api/v1/authors
+
+### POST Auteur sans clé (doit échouer avec 401)
+POST http://localhost:8080/api/v1/authors
+Content-Type: application/json
+
+{
+  &quot;firstName&quot;: &quot;Isaac&quot;,
+  &quot;lastName&quot;: &quot;Asimov&quot;
+}
+
+### POST Auteur avec clé (doit réussir)
+POST http://localhost:8080/api/v1/authors
+Content-Type: application/json
+X-API-KEY: BiblioTechSecretKey123!
+
+{
+  &quot;firstName&quot;: &quot;Isaac&quot;,
+  &quot;lastName&quot;: &quot;Asimov&quot;
+}
+</div></div></div></section><section class="chapter"><h2 id="conclusion" data-toc="conclusion">Conclusion</h2><p id="aus0zs_105">Vous venez d'impl&eacute;menter votre premier m&eacute;canisme de s&eacute;curit&eacute; ! En utilisant un simple filtre, vous avez appris &agrave; intercepter des requ&ecirc;tes et &agrave; prendre des d&eacute;cisions avant m&ecirc;me que votre logique m&eacute;tier ne soit invoqu&eacute;e. C'est un pattern extr&ecirc;mement puissant.</p><p id="aus0zs_106">La s&eacute;curit&eacute; par cl&eacute; d'API est une excellente premi&egrave;re ligne de d&eacute;fense, parfaite pour contr&ocirc;ler l'acc&egrave;s entre des services serveurs ou pour des API publiques avec des quotas d'utilisation. Gardez cependant &agrave; l'esprit que ce n'est qu'un d&eacute;but. Pour des applications g&eacute;rant des utilisateurs finaux, avec des notions de r&ocirc;les et de permissions complexes, vous vous tournerez naturellement vers des solutions plus robustes comme <span class="control" id="aus0zs_107">Spring Security</span>, qui est la prochaine &eacute;tape logique de votre parcours d'apprentissage de la s&eacute;curit&eacute;.</p></section><div class="last-modified">29 juin 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="005-03-api-versionning.html" class="navigation-links__prev">Chapitre 5 : Le Versioning d'API - G&eacute;rer le Temps et l'&Eacute;volution</a><a href="005-05-jwt-security.html" class="navigation-links__next">Chapitre 5 : S&eacute;curisation de l'API avec JWT - L'Authentification Moderne</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b776/app.js"></script></body></html>
