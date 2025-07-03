@@ -154,9 +154,9 @@ Le serveur retournera les livres dans l'ordre demandé.
 
 </procedure>
 
-<div class="alert alert-warning" title="Attention aux propriétés de tri">
+<warning class="alert alert-warning" title="Attention aux propriétés de tri">
 <p>Le client doit utiliser les noms des propriétés de l'<b>entité JPA</b> (<code>publicationDate</code>), pas forcément ceux du DTO. Si les noms diffèrent, vous pourriez avoir besoin d'une configuration plus avancée. Pour des raisons de sécurité, il est aussi recommandé de valider les champs sur lesquels le tri est autorisé pour éviter que des utilisateurs malicieux tentent de trier sur des champs sensibles.</p>
-</div>
+</warning>
 
 ### Exercice 11 : Paginer et Trier les Auteurs
 
